@@ -10,5 +10,6 @@ public class SubjectWithPostListDto {
 
   private long id;
   private String name;
+  private String description;
   private List<PostDto> postDtos;
 }

@@ -23,4 +23,14 @@ public class SubjectServiceImpl implements SubjectInterface {
   public Optional<Subject> getSubjectById(long id) {
     return subjectRepository.findById(id);
   }
+
+  @Override
+  public Optional<Subject> getSubjectByIdWithPost(long id) {
+    return subjectRepository
+      .findById(id)
+      .map(subject -> {
+        subject.getPosts().size();
+        return subject;
+      });
+  }
 }

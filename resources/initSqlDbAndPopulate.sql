@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS USER (
 
 CREATE TABLE IF NOT EXISTS SUBJECT (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS USER_SUBJECT (
@@ -42,11 +43,11 @@ CREATE TABLE IF NOT EXISTS COMMENT (
 INSERT INTO user (email, username, password) VALUES
 ('test@test.com', 'testUser', '$2y$10$yvJ8sr97eg44163KD4wqkOiBwmNFENw7oyNBnNGAjNY4unVRUc8M6');
 
-INSERT INTO subject (name) VALUES
-('JavaScript'),
-('Java'),
-('Python'),
-('Go');
+INSERT INTO subject (name, description) VALUES
+('JavaScript', 'Content of JavaScript subject'),
+('Java', 'Content of Java subject'),
+('Python', 'Content of Python subject'),
+('Go', 'Content of Go subject');
 
 INSERT INTO user_subject (user_id, subject_id) VALUES
 (1, 1),

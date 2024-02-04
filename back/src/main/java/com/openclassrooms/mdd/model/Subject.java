@@ -43,6 +43,11 @@ public class Subject {
   @Column(name = "name")
   private String name;
 
+  @NonNull
+  @Size(min = 30)
+  @Column(name = "description")
+  private String description;
+
   @OneToMany(
     mappedBy = "subject",
     cascade = CascadeType.ALL,

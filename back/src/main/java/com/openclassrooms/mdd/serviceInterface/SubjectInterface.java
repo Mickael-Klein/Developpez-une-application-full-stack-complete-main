@@ -8,4 +8,6 @@ public interface SubjectInterface {
   List<Subject> getAllSubject();
 
   Optional<Subject> getSubjectById(long id);
+
+  Optional<Subject> getSubjectByIdWithPost(long id);
 }

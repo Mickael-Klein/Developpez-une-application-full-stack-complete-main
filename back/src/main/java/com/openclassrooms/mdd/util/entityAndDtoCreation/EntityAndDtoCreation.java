@@ -3,6 +3,7 @@ package com.openclassrooms.mdd.util.entityAndDtoCreation;
 import com.openclassrooms.mdd.dto.DbUserDto;
 import com.openclassrooms.mdd.dto.DbUserWithSubjectListDto;
 import com.openclassrooms.mdd.dto.SubjectDto;
+import com.openclassrooms.mdd.dto.SubjectWithPostListDto;
 import com.openclassrooms.mdd.model.DbUser;
 import com.openclassrooms.mdd.model.Subject;
 import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.DbUserFactory;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,5 +48,24 @@ public class EntityAndDtoCreation {
       dbUser,
       subjectDtos
     );
+  }
+
+  public SubjectDto getSubjectDtoFromSubjectEntity(Subject subject) {
+    return subjectFactory.getSubjectDtoFromEntity(subject);
+  }
+
+  public List<SubjectDto> getSubjectDtoListFromSubjectEntityList(
+    List<Subject> subjectList
+  ) {
+    return subjectList
+      .stream()
+      .map(this::getSubjectDtoFromSubjectEntity)
+      .collect(Collectors.toList());
+  }
+
+  public SubjectWithPostListDto getSubjectWithPostDtoFromSubjectWithPostEntity(
+    Subject subject
+  ) {
+    return subjectFactory.getSujectWithPostListToDto(subject);
   }
 }

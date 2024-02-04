@@ -11,7 +11,9 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JwtServiceImpl implements JwtInterface {
 
   @Autowired
@@ -28,7 +30,7 @@ public class JwtServiceImpl implements JwtInterface {
       .builder()
       .issuer("self")
       .issuedAt(instantNow)
-      .expiresAt(instantNow.plus(1, ChronoUnit.MONTHS))
+      .expiresAt(instantNow.plus(30, ChronoUnit.DAYS))
       .subject(idToString)
       .build();
 

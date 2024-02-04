@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DbUserRepository extends JpaRepository<DbUser, Long> {
   Optional<DbUser> findByEmail(String email);
+  Optional<DbUser> findByUsername(String username);
 }

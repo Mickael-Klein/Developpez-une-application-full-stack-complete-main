@@ -8,9 +8,15 @@ public interface DbUserInterface {
 
   Optional<DbUser> getUserByEmail(String email);
 
+  Optional<DbUser> getUserByUsername(String username);
+
   Optional<DbUser> getUserById(long id);
 
-  Boolean isEmailAlreadyTaken(String email);
+  Optional<DbUser> getUserByIdWithSub(long id);
 
-  Boolean isPasswordValid(String password, DbUser dbUser);
+  boolean isEmailAlreadyTaken(String email);
+
+  boolean isUsernameAlreadyTaken(String username);
+
+  boolean isPasswordValid(String password, DbUser dbUser);
 }

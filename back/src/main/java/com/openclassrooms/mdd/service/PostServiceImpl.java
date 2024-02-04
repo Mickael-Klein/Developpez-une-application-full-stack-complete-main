@@ -22,4 +22,14 @@ public class PostServiceImpl implements PostInterface {
   public Optional<Post> getPostById(long id) {
     return postRepository.findById(id);
   }
+
+  @Override
+  public Optional<Post> getPostWithCommentsById(long id) {
+    return postRepository
+      .findById(id)
+      .map(post -> {
+        post.getComments().size();
+        return post;
+      });
+  }
 }

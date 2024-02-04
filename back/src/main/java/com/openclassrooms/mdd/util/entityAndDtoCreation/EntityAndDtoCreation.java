@@ -2,11 +2,15 @@ package com.openclassrooms.mdd.util.entityAndDtoCreation;
 
 import com.openclassrooms.mdd.dto.DbUserDto;
 import com.openclassrooms.mdd.dto.DbUserWithSubjectListDto;
+import com.openclassrooms.mdd.dto.PostDto;
+import com.openclassrooms.mdd.dto.PostWithCommentListDto;
 import com.openclassrooms.mdd.dto.SubjectDto;
 import com.openclassrooms.mdd.dto.SubjectWithPostListDto;
 import com.openclassrooms.mdd.model.DbUser;
+import com.openclassrooms.mdd.model.Post;
 import com.openclassrooms.mdd.model.Subject;
 import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.DbUserFactory;
+import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.PostFactory;
 import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.SubjectFactory;
 import com.openclassrooms.mdd.util.payload.request.RegisterRequest;
 import java.util.ArrayList;
@@ -25,6 +29,9 @@ public class EntityAndDtoCreation {
 
   @Autowired
   private SubjectFactory subjectFactory;
+
+  @Autowired
+  private PostFactory postFactory;
 
   public DbUser getDbUserFromRegisterRequest(RegisterRequest registerRequest) {
     return dbUserFactory.getUserEntityFromRegisterRequest(registerRequest);
@@ -67,5 +74,15 @@ public class EntityAndDtoCreation {
     Subject subject
   ) {
     return subjectFactory.getSujectWithPostListToDto(subject);
+  }
+
+  public PostDto getPostDtoFromPostEntity(Post post) {
+    return postFactory.getPostDtoFromPostEntity(post);
+  }
+
+  public PostWithCommentListDto getPostWithCommentsDtoFromPostWithCommentEntity(
+    Post post
+  ) {
+    return postFactory.getPostWithCommentToDto(post);
   }
 }

@@ -40,11 +40,11 @@ public class SubjectController {
     }
   }
 
-  @GetMapping("/getbyid/{subjectid}")
-  public ResponseEntity<?> getSubjectById(@PathVariable final long subjectid) {
+  @GetMapping("/getbyid/{subjectId}")
+  public ResponseEntity<?> getSubjectById(@PathVariable final long subjectId) {
     try {
       Optional<Subject> optionalSubject = subjectService.getSubjectById(
-        subjectid
+        subjectId
       );
       if (!optionalSubject.isPresent()) {
         return ResponseEntity
@@ -62,13 +62,13 @@ public class SubjectController {
     }
   }
 
-  @GetMapping("/getbyidwithpost/{subjectid}")
+  @GetMapping("/getbyidwithpost/{subjectId}")
   public ResponseEntity<?> getSubjectByIdWithPost(
-    @PathVariable final long subjectid
+    @PathVariable final long subjectId
   ) {
     try {
       Optional<Subject> optionalSubject = subjectService.getSubjectByIdWithPost(
-        subjectid
+        subjectId
       );
       if (!optionalSubject.isPresent()) {
         return ResponseEntity

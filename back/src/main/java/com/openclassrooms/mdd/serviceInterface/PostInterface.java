@@ -7,4 +7,6 @@ public interface PostInterface {
   Post savePost(Post post);
 
   Optional<Post> getPostById(long id);
+
+  Optional<Post> getPostWithCommentsById(long id);
 }

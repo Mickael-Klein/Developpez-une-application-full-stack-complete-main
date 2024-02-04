@@ -1,13 +1,18 @@
 package com.openclassrooms.mdd.util.entityAndDtoCreation.factory;
 
 import com.openclassrooms.mdd.dto.PostDto;
+import com.openclassrooms.mdd.dto.PostWithCommentListDto;
 import com.openclassrooms.mdd.model.Post;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostFactory {
+
+  @Autowired
+  private CommentFactory commentFactory;
 
   public PostDto getPostDtoFromPostEntity(Post post) {
     return new PostDto(
@@ -25,5 +30,17 @@ public class PostFactory {
       .stream()
       .map(post -> getPostDtoFromPostEntity(post))
       .collect(Collectors.toList());
+  }
+
+  public PostWithCommentListDto getPostWithCommentToDto(Post post) {
+    return new PostWithCommentListDto(
+      post.getId(),
+      post.getTitle(),
+      post.getContent(),
+      post.getDbUser().getId(),
+      post.getSubject().getId(),
+      post.getCreatedAt(),
+      commentFactory.commentListToDto(post.getComments())
+    );
   }
 }

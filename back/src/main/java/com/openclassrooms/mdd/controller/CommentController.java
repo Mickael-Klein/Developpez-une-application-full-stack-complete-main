@@ -50,14 +50,15 @@ public class CommentController {
   @Autowired
   private PostResponse postResponse;
 
-  @PostMapping("/create/{postId}")
+  @PostMapping("/create")
   public ResponseEntity<?> createComment(
     @AuthenticationPrincipal Jwt jwt,
-    @PathVariable final long postId,
     @Valid @RequestBody CommentRequest commentRequest
   ) {
     try {
-      Optional<Post> optionalPost = postService.getPostById(postId);
+      Optional<Post> optionalPost = postService.getPostById(
+        commentRequest.getPostId()
+      );
       if (!optionalPost.isPresent()) {
         return ResponseEntity
           .badRequest()

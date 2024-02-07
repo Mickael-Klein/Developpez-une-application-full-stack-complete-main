@@ -5,6 +5,6 @@ export class Subject {
     public id: number,
     public name: string,
     public description: string,
-    public postIds?: number[]
+    public post?: Post[]
   ) {}
 }

@@ -54,9 +54,9 @@ export class SubjectService {
   }
 
   private getSubjectFromSubjectResponse(response: SubjectResponse): Subject {
-    if (response.postIds && response.postIds.length > 0) {
-      const { id, name, description, postIds } = response;
-      return new Subject(id, name, description, postIds);
+    if (response.postDtos && response.postDtos.length > 0) {
+      const { id, name, description, postDtos } = response;
+      return new Subject(id, name, description, postDtos);
     } else {
       const { id, name, description } = response;
       return new Subject(id, name, description);

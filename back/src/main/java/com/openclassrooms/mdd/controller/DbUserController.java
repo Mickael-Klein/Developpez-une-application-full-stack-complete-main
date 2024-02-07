@@ -93,7 +93,7 @@ public class DbUserController {
       return ResponseEntity
         .ok()
         .body(
-          entityAndDtoCreation.getDbUserWithSubDtoFromDbUserWithSubEntity(
+          entityAndDtoCreation.getDbUserWithSubIdsFromDbUserWithSubEntity(
             optionalDbUser.get()
           )
         );
@@ -238,7 +238,7 @@ public class DbUserController {
       return ResponseEntity
         .ok()
         .body(
-          entityAndDtoCreation.getDbUserWithSubDtoFromDbUserWithSubEntity(
+          entityAndDtoCreation.getDbUserWithSubIdsFromDbUserWithSubEntity(
             savedDbUser
           )
         );
@@ -300,7 +300,7 @@ public class DbUserController {
       return ResponseEntity
         .ok()
         .body(
-          entityAndDtoCreation.getDbUserWithSubDtoFromDbUserWithSubEntity(
+          entityAndDtoCreation.getDbUserWithSubIdsFromDbUserWithSubEntity(
             savedDbUser
           )
         );

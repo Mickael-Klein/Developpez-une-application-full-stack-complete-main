@@ -1,11 +1,8 @@
 package com.openclassrooms.mdd.util.entityAndDtoCreation;
 
 import com.openclassrooms.mdd.dto.DbUserDto;
-import com.openclassrooms.mdd.dto.DbUserWithSubjectListDto;
 import com.openclassrooms.mdd.dto.PostDto;
-import com.openclassrooms.mdd.dto.PostWithCommentListDto;
 import com.openclassrooms.mdd.dto.SubjectDto;
-import com.openclassrooms.mdd.dto.SubjectWithPostListDto;
 import com.openclassrooms.mdd.model.DbUser;
 import com.openclassrooms.mdd.model.Post;
 import com.openclassrooms.mdd.model.Subject;
@@ -13,9 +10,6 @@ import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.DbUserFactory;
 import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.PostFactory;
 import com.openclassrooms.mdd.util.entityAndDtoCreation.factory.SubjectFactory;
 import com.openclassrooms.mdd.util.payload.request.RegisterRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,20 +35,8 @@ public class EntityAndDtoCreation {
     return dbUserFactory.getUserDTOFromEntity(dbUser);
   }
 
-  public DbUserWithSubjectListDto getDbUserWithSubDtoFromDbUserWithSubEntity(
-    DbUser dbUser
-  ) {
-    List<SubjectDto> subjectDtos = new ArrayList<>();
-    for (Subject subject : dbUser.getSubjects()) {
-      subjectDtos.add(subjectFactory.getSubjectDtoFromEntity(subject));
-    }
-
-    Collections.sort(subjectDtos, Comparator.comparing(SubjectDto::getId));
-
-    return dbUserFactory.getUserWithSubDtoFromEntityWithSub(
-      dbUser,
-      subjectDtos
-    );
+  public DbUserDto getDbUserWithSubIdsFromDbUserWithSubEntity(DbUser dbUser) {
+    return dbUserFactory.getUserWithSubDtoFromEntityWithSub(dbUser);
   }
 
   public SubjectDto getSubjectDtoFromSubjectEntity(Subject subject) {
@@ -70,7 +52,7 @@ public class EntityAndDtoCreation {
       .collect(Collectors.toList());
   }
 
-  public SubjectWithPostListDto getSubjectWithPostDtoFromSubjectWithPostEntity(
+  public SubjectDto getSubjectWithPostDtoFromSubjectWithPostEntity(
     Subject subject
   ) {
     return subjectFactory.getSujectWithPostListToDto(subject);
@@ -80,9 +62,7 @@ public class EntityAndDtoCreation {
     return postFactory.getPostDtoFromPostEntity(post);
   }
 
-  public PostWithCommentListDto getPostWithCommentsDtoFromPostWithCommentEntity(
-    Post post
-  ) {
+  public PostDto getPostWithCommentsDtoFromPostWithCommentEntity(Post post) {
     return postFactory.getPostWithCommentToDto(post);
   }
 }

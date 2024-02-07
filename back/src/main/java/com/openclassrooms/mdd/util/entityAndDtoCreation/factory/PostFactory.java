@@ -1,7 +1,6 @@
 package com.openclassrooms.mdd.util.entityAndDtoCreation.factory;
 
 import com.openclassrooms.mdd.dto.PostDto;
-import com.openclassrooms.mdd.dto.PostWithCommentListDto;
 import com.openclassrooms.mdd.model.Post;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,14 +14,13 @@ public class PostFactory {
   private CommentFactory commentFactory;
 
   public PostDto getPostDtoFromPostEntity(Post post) {
-    return new PostDto(
-      post.getId(),
-      post.getTitle(),
-      post.getContent(),
-      post.getDbUser().getId(),
-      post.getSubject().getId(),
-      post.getCreatedAt()
-    );
+    return new PostDto()
+      .setId(post.getId())
+      .setTitle(post.getTitle())
+      .setContent(post.getContent())
+      .setAuthorId(post.getDbUser().getId())
+      .setSubjectId(post.getSubject().getId())
+      .setCreatedAt(post.getCreatedAt());
   }
 
   public List<PostDto> getPostDtoListFromPostEntityList(List<Post> postList) {
@@ -32,15 +30,14 @@ public class PostFactory {
       .collect(Collectors.toList());
   }
 
-  public PostWithCommentListDto getPostWithCommentToDto(Post post) {
-    return new PostWithCommentListDto(
-      post.getId(),
-      post.getTitle(),
-      post.getContent(),
-      post.getDbUser().getId(),
-      post.getSubject().getId(),
-      post.getCreatedAt(),
-      commentFactory.commentListToDto(post.getComments())
-    );
+  public PostDto getPostWithCommentToDto(Post post) {
+    return new PostDto()
+      .setId(post.getId())
+      .setTitle(post.getTitle())
+      .setContent(post.getContent())
+      .setAuthorId(post.getDbUser().getId())
+      .setSubjectId(post.getSubject().getId())
+      .setCreatedAt(post.getCreatedAt())
+      .setCommentDtos(commentFactory.commentListToDto(post.getComments()));
   }
 }

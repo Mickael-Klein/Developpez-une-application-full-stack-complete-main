@@ -1,10 +1,11 @@
 package com.openclassrooms.mdd.util.entityAndDtoCreation.factory;
 
 import com.openclassrooms.mdd.dto.DbUserDto;
-import com.openclassrooms.mdd.dto.DbUserWithSubjectListDto;
-import com.openclassrooms.mdd.dto.SubjectDto;
 import com.openclassrooms.mdd.model.DbUser;
+import com.openclassrooms.mdd.model.Subject;
 import com.openclassrooms.mdd.util.payload.request.RegisterRequest;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,26 +29,28 @@ public class DbUserFactory {
   }
 
   public DbUserDto getUserDTOFromEntity(DbUser user) {
-    DbUserDto dbUserDto = new DbUserDto(
-      user.getId(),
-      user.getEmail(),
-      user.getUsername(),
-      user.getPassword()
-    );
+    DbUserDto dbUserDto = new DbUserDto()
+      .setId(user.getId())
+      .setEmail(user.getEmail())
+      .setUsername(user.getUsername())
+      .setPassword(user.getPassword());
     return dbUserDto;
   }
 
-  public DbUserWithSubjectListDto getUserWithSubDtoFromEntityWithSub(
-    DbUser dbUser,
-    List<SubjectDto> subjectDtos
-  ) {
-    DbUserWithSubjectListDto dbUserWithSubjectListDto = new DbUserWithSubjectListDto(
+  public DbUserDto getUserWithSubDtoFromEntityWithSub(DbUser dbUser) {
+    List<Long> subjectIds = new ArrayList<>();
+    for (Subject subject : dbUser.getSubjects()) {
+      subjectIds.add(subject.getId());
+    }
+    Collections.sort(subjectIds);
+
+    DbUserDto dbUserWithSubjectIdsDto = new DbUserDto(
       dbUser.getId(),
       dbUser.getEmail(),
       dbUser.getUsername(),
       dbUser.getPassword(),
-      subjectDtos
+      subjectIds
     );
-    return dbUserWithSubjectListDto;
+    return dbUserWithSubjectIdsDto;
   }
 }

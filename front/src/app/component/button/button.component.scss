@@ -1,0 +1,21 @@
+@import "../../style/globalVariables";
+
+.colored {
+  background-color: $color-primary;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  width: 100%;
+  max-width: 220px;
+  border: solid 2px black;
+  cursor: pointer;
+  font-size: $font-size-basic;
+  font-weight: 600;
+  border-radius: $border-radius;
+  background-color: transparent;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

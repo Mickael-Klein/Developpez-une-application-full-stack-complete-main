@@ -43,6 +43,7 @@ export class SessionService {
   public logIn(user: User, jwt: string): void {
     this.isLogged = true;
     this.user = user;
+    localStorage.setItem('jwt', jwt);
     this.jwt = jwt;
     this.next();
   }

@@ -1,1 +1,8 @@
-<p>login works!</p>
+<main>
+  <h1>Se connecter</h1>
+
+  <form [formGroup]="loginForm">
+    <app-form-input [formInputData]="emailOrUsernameFormInputData" />
+    <app-form-input [formInputData]="passwordFormInputData" />
+  </form>
+</main>

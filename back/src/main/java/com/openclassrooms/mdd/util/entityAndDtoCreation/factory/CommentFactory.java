@@ -14,6 +14,7 @@ public class CommentFactory {
       comment.getId(),
       comment.getContent(),
       comment.getDbUser().getId(),
+      comment.getDbUser().getUsername(),
       comment.getCreatedAt(),
       comment.getPost().getId()
     );

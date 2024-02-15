@@ -21,6 +21,7 @@ public class PostFactory {
       .setAuthorId(post.getDbUser().getId())
       .setAuthorName(post.getDbUser().getUsername())
       .setSubjectId(post.getSubject().getId())
+      .setSubjectName(post.getSubject().getName())
       .setCreatedAt(post.getCreatedAt());
   }
 
@@ -39,6 +40,7 @@ public class PostFactory {
       .setAuthorId(post.getDbUser().getId())
       .setAuthorName(post.getDbUser().getUsername())
       .setSubjectId(post.getSubject().getId())
+      .setSubjectName(post.getSubject().getName())
       .setCreatedAt(post.getCreatedAt())
       .setCommentDtos(commentFactory.commentListToDto(post.getComments()));
   }

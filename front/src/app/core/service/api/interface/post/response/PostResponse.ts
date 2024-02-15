@@ -5,7 +5,9 @@ export interface PostResponse {
   title: string;
   content: string;
   authorId: number;
+  authorName: string;
   subjectId: number;
+  subjectName: string;
   createdAt: Date;
   commentDtos?: Comment[];
 }

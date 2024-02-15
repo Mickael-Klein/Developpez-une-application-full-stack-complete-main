@@ -8,6 +8,7 @@ export class Post {
     public authorId: number,
     public authorName: string,
     public subjectId: number,
+    public subjectName: string,
     public createdAt: Date,
     public comments?: Comment[]
   ) {}

@@ -33,6 +33,9 @@ public class PostDto {
   private long subjectId;
 
   @NotNull
+  private String subjectName;
+
+  @NotNull
   private LocalDateTime createdAt;
 
   private List<CommentDto> commentDtos;

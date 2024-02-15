@@ -31,13 +31,4 @@ export class PostService {
         catchError((error: any) => getErrorMessageFromCatchedError(error))
       );
   }
-
-  public getByIdWithComments(postId: number): Observable<Post> {
-    return this.http
-      .get<PostResponse>(this.pathService + 'getpostwithcomments/' + postId)
-      .pipe(
-        map((response: PostResponse) => getPostFromPostResponse(response)),
-        catchError((error: any) => getErrorMessageFromCatchedError(error))
-      );
-  }
 }

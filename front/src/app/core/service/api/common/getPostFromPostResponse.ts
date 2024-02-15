@@ -9,8 +9,17 @@ const getPostFromPostResponse = (postResponse: PostResponse): Post => {
     postResponse.commentDtos !== undefined &&
     postResponse.commentDtos.length > 0
   ) {
-    const { id, title, content, authorId, subjectId, createdAt, commentDtos } =
-      postResponse;
+    const {
+      id,
+      title,
+      content,
+      authorId,
+      authorName,
+      subjectId,
+      subjectName,
+      createdAt,
+      commentDtos,
+    } = postResponse;
     const commentsArr: Comment[] = commentDtos.map(
       (commentDto: CommentResponse) => commentDtoToComment(commentDto)
     );
@@ -19,13 +28,33 @@ const getPostFromPostResponse = (postResponse: PostResponse): Post => {
       title,
       content,
       authorId,
+      authorName,
       subjectId,
+      subjectName,
       createdAt,
       commentsArr
     );
   } else {
-    const { id, title, content, authorId, subjectId, createdAt } = postResponse;
-    return new Post(id, title, content, authorId, subjectId, createdAt);
+    const {
+      id,
+      title,
+      content,
+      authorId,
+      authorName,
+      subjectId,
+      subjectName,
+      createdAt,
+    } = postResponse;
+    return new Post(
+      id,
+      title,
+      content,
+      authorId,
+      authorName,
+      subjectId,
+      subjectName,
+      createdAt
+    );
   }
 };
 

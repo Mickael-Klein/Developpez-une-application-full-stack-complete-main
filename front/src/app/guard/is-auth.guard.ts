@@ -17,6 +17,7 @@ export const isAuthGuard: CanActivateFn = (
   if (sessionService.isLogged) {
     return true;
   } else {
+    console.log('redirection to home append in guard');
     router.navigateByUrl('/home');
     return false;
   }

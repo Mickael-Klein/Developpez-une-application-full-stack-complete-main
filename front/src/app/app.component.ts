@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
         }
       });
       if (isLogged && isOnNoAuthRoute) {
+        console.log('redirection come from here');
         this.router.navigateByUrl('/articles');
       } else if (!isLogged && !isOnNoAuthRoute) {
         this.router.navigateByUrl('/login');

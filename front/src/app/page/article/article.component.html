@@ -1,1 +1,43 @@
-<p>article works!</p>
+<main *ngIf="post$ | async as post">
+  <div class="backArrowAndPostContainer">
+    <div class="arrowContainer" (click)="backToArticles()">
+      <img
+        src="../../../assets/ArrowLeft.png"
+        alt="Back to article arrow left"
+      />
+    </div>
+    <div class="titleContainer">
+      <h1>{{ post.title }}</h1>
+    </div>
+  </div>
+  <div class="postAndCommentContainer">
+    <div class="postContainer">
+      <div class="globalInfoContainer">
+        <p class="postInfo">{{ post.createdAt | date }}</p>
+        <p class="postInfo">{{ post.authorName }}</p>
+        <p class="postInfo">{{ post.subjectName }}</p>
+      </div>
+      <div class="content">
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+    <div class="commentContainer">
+      <h3>Commentaires</h3>
+      <div class="comments">
+        <app-comment
+          *ngFor="let comment of post.comments"
+          [commentData]="comment"
+        />
+      </div>
+      <div class="userNewCommentContainer">
+        <input type="text" name="userNewComment" id="userNewComment" />
+        <div class="sendContainer">
+          <img src="../../../assets/icon_send.png" alt="Send logo" />
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<p *ngIf="errorOnIdParameter">Wrong id parameter</p>
+<p *ngIf="isLoading">loading...</p>

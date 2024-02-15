@@ -1,0 +1,78 @@
+@import "../../style/globalVariables";
+
+main {
+  width: 100%;
+  padding: 0 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .backArrowAndPostContainer {
+    margin-top: 40px;
+    display: flex;
+    width: 100%;
+    margin-bottom: 30px;
+    align-items: center;
+
+    .arrowContainer {
+      cursor: pointer;
+      width: 100px;
+    }
+
+    .titleContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h1 {
+        font-weight: bold;
+        margin-bottom: 7px;
+      }
+    }
+  }
+
+  .postAndCommentContainer {
+    width: 100%;
+    padding-left: 100px;
+
+    .postContainer {
+      width: 100%;
+      border-bottom: solid 1px black;
+      margin-bottom: 40px;
+
+      .globalInfoContainer {
+        display: flex;
+        gap: 10%;
+        font-size: $font-size-big;
+        margin-bottom: 25px;
+      }
+
+      .content {
+        width: 100%;
+        margin-bottom: 40px;
+        font-size: $font-size-basic;
+      }
+    }
+
+    .commentContainer {
+      width: 100%;
+
+      h3 {
+        margin: 25px 0;
+        font-size: $font-size-big;
+      }
+
+      .comment {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding-left: 10%;
+      }
+
+      .userNewCommentContainer {
+        width: 100%;
+        display: flex;
+        padding-left: 10%;
+      }
+    }
+  }
+}

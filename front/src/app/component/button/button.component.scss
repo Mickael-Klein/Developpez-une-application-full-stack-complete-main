@@ -2,6 +2,8 @@
 
 .colored {
   background-color: $color-primary;
+  border: none;
+  color: white;
 }
 
 button {
@@ -11,7 +13,7 @@ button {
   border: solid 2px black;
   cursor: pointer;
   font-size: $font-size-basic;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: $border-radius;
   background-color: transparent;
 

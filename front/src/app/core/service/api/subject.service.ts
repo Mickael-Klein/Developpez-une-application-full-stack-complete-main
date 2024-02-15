@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map } from 'rxjs';
 import { Subject } from '../../model/Subject.model';
-import { environment } from '../../../enviroment/environment';
 import getErrorMessageFromCatchedError from './common/errorResponse';
 import { SubjectResponse } from './interface/subject/SubjectResponse';
 
@@ -10,28 +9,26 @@ import { SubjectResponse } from './interface/subject/SubjectResponse';
   providedIn: 'root',
 })
 export class SubjectService {
-  private pathService = 'subject/';
+  private pathService = 'api/subject/';
+  subjects!: Subject[];
+
   constructor(private http: HttpClient) {}
 
   public getAllSubjects(): Observable<Subject[]> {
-    return this.http
-      .get<SubjectResponse[]>(environment.apiUrl + this.pathService + 'getall')
-      .pipe(
-        map((response: SubjectResponse[]) => {
-          let subjectArr = response.map((subject: SubjectResponse) =>
-            this.getSubjectFromSubjectResponse(subject)
-          );
-          return subjectArr;
-        }),
-        catchError((error: any) => getErrorMessageFromCatchedError(error))
-      );
+    return this.http.get<SubjectResponse[]>(this.pathService + 'getall').pipe(
+      map((response: SubjectResponse[]) => {
+        let subjectArr = response.map((subject: SubjectResponse) =>
+          this.getSubjectFromSubjectResponse(subject)
+        );
+        return subjectArr;
+      }),
+      catchError((error: any) => getErrorMessageFromCatchedError(error))
+    );
   }
 
   public getSubjectById(subjectId: number): Observable<Subject> {
     return this.http
-      .get<SubjectResponse>(
-        environment.apiUrl + this.pathService + 'getbyid/' + subjectId
-      )
+      .get<SubjectResponse>(this.pathService + 'getbyid/' + subjectId)
       .pipe(
         map((response: SubjectResponse) =>
           this.getSubjectFromSubjectResponse(response)
@@ -42,9 +39,7 @@ export class SubjectService {
 
   public getSubjectWithPostById(subjectId: number): Observable<Subject> {
     return this.http
-      .get<SubjectResponse>(
-        environment.apiUrl + this.pathService + 'getbyidwithpost/' + subjectId
-      )
+      .get<SubjectResponse>(this.pathService + 'getbyidwithpost/' + subjectId)
       .pipe(
         map((response: SubjectResponse) =>
           this.getSubjectFromSubjectResponse(response)

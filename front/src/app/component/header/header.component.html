@@ -1,0 +1,11 @@
+@if (headerShouldBeDisplay) {
+<header>
+  <div class="logoContainer" (click)="onLogoClick()">
+    <img src="../../../assets/logo_p6_small.png" alt="Logo MDD" />
+  </div>
+
+  @if (isLogged) {
+  <app-nav />
+  }
+</header>
+}

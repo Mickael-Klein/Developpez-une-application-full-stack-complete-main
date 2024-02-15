@@ -1,0 +1,21 @@
+header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3%;
+  border-bottom: solid 1px black;
+
+  .logoContainer {
+    width: 140px;
+    height: 90px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}

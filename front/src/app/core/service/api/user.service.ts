@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map } from 'rxjs';
 import { User } from '../../model/User.model';
-import { environment } from '../../../enviroment/environment';
 import { UserResponse } from './interface/user/response/UserResponse';
 import { UpdateUserRequest } from './interface/user/request/UpdateUserRequest';
 import getErrorMessageFromCatchedError from './common/errorResponse';
@@ -11,34 +10,27 @@ import getErrorMessageFromCatchedError from './common/errorResponse';
   providedIn: 'root',
 })
 export class UserService {
-  private pathService = 'user/';
+  private pathService = 'api/user/';
 
   constructor(private http: HttpClient) {}
 
   public getMe(): Observable<User> {
-    return this.http
-      .get<UserResponse>(environment.apiUrl + this.pathService + 'me')
-      .pipe(
-        map((response: UserResponse) => this.getUserFromUserResponse(response)),
-        catchError((error: any) => getErrorMessageFromCatchedError(error))
-      );
+    return this.http.get<UserResponse>(this.pathService + 'me').pipe(
+      map((response: UserResponse) => this.getUserFromUserResponse(response)),
+      catchError((error: any) => getErrorMessageFromCatchedError(error))
+    );
   }
 
   public getMeWithSub(): Observable<User> {
-    return this.http
-      .get<UserResponse>(environment.apiUrl + this.pathService + 'mewithsub')
-      .pipe(
-        map((response: UserResponse) => this.getUserFromUserResponse(response)),
-        catchError((error: any) => getErrorMessageFromCatchedError(error))
-      );
+    return this.http.get<UserResponse>(this.pathService + 'mewithsub').pipe(
+      map((response: UserResponse) => this.getUserFromUserResponse(response)),
+      catchError((error: any) => getErrorMessageFromCatchedError(error))
+    );
   }
 
   public updateMe(updateUserRequest: UpdateUserRequest): Observable<User> {
     return this.http
-      .put<UserResponse>(
-        environment.apiUrl + this.pathService + 'updateme',
-        updateUserRequest
-      )
+      .put<UserResponse>(this.pathService + 'updateme', updateUserRequest)
       .pipe(
         map((response: UserResponse) => this.getUserFromUserResponse(response)),
         catchError((error: any) => getErrorMessageFromCatchedError(error))
@@ -47,10 +39,7 @@ export class UserService {
 
   public subscribe(subjectId: number): Observable<User> {
     return this.http
-      .post<UserResponse>(
-        environment.apiUrl + this.pathService + 'subscribe/' + subjectId,
-        null
-      )
+      .post<UserResponse>(this.pathService + 'subscribe/' + subjectId, null)
       .pipe(
         map((response: UserResponse) => this.getUserFromUserResponse(response)),
         catchError((error: any) => getErrorMessageFromCatchedError(error))
@@ -59,9 +48,7 @@ export class UserService {
 
   public unsubscribe(subjectId: number): Observable<User> {
     return this.http
-      .delete<UserResponse>(
-        environment.apiUrl + this.pathService + 'unsubscribe/' + subjectId
-      )
+      .delete<UserResponse>(this.pathService + 'unsubscribe/' + subjectId)
       .pipe(
         map((response: UserResponse) => this.getUserFromUserResponse(response)),
         catchError((error: any) => getErrorMessageFromCatchedError(error))

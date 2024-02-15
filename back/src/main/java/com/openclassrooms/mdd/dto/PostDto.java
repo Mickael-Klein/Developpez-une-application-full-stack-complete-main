@@ -27,6 +27,9 @@ public class PostDto {
   private long authorId;
 
   @NotNull
+  private String authorName;
+
+  @NotNull
   private long subjectId;
 
   @NotNull

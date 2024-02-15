@@ -1,0 +1,20 @@
+<nav>
+  <div class="navLinkContainer">
+    <a [class.active]="isOnArticlesPage" routerLink="/articles">Articles</a>
+  </div>
+  <div class="navLinkContainer">
+    <a [class.active]="isOnThemePage" routerLink="/theme">Thèmes</a>
+  </div>
+  <div class="navLinkContainer">
+    <a routerLink="/me">
+      @if (!isOnMePage) {
+      <img src="../../../assets/icon_user.png" alt="logo user" />
+      } @else {
+      <img
+        src="../../../assets/icon_user_selected.png"
+        alt="logo user selected"
+      />
+      }
+    </a>
+  </div>
+</nav>

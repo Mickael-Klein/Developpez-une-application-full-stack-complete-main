@@ -1,1 +1,26 @@
-<p>articles works!</p>
+<main>
+  <div class="userControlContainer">
+    <app-button
+      [buttonProps]="buttonProps"
+      (click)="onPostCreateButtonClick()"
+    />
+    <p>
+      Trier par
+      <span><img src="../../../assets/Arrow_down.png" alt="Arrow down" /></span>
+    </p>
+  </div>
+
+  @if (!isLoading) {
+  <div class="postContainer">
+    <app-post-card
+      *ngFor="let post of orderedPostsByDate; index as i"
+      [postProps]="post"
+      class="postCardContainer"
+    ></app-post-card>
+  </div>
+  } @else if (isLoading) {
+  <p>loading...</p>
+  } @else if (error) {
+  <p>an error occured, try again later</p>
+  }
+</main>

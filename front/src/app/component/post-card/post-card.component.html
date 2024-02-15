@@ -1,0 +1,10 @@
+<div class="postCard" (click)="onPostClick()">
+  <h3>{{ postProps.title }}</h3>
+  <div class="postInfoContainer">
+    <p>{{ postProps.createdAt | date }}</p>
+    <p>{{ postProps.authorName }}</p>
+  </div>
+  <div class="postContentContainer">
+    <p>{{ postProps.content }}</p>
+  </div>
+</div>

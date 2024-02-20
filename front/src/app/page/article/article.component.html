@@ -27,13 +27,28 @@
         <app-comment
           *ngFor="let comment of post.comments"
           [commentData]="comment"
+          class="appComment"
         />
       </div>
-      <div class="userNewCommentContainer">
-        <input type="text" name="userNewComment" id="userNewComment" />
-        <div class="sendContainer">
+      <form class="userNewCommentContainer" [formGroup]="commentForm">
+        <textarea
+          name="userNewComment"
+          id="userNewComment"
+          cols="30"
+          rows="10"
+          placeholder="Ecrivez votre commentaire ici"
+          formControlName="comment"
+        ></textarea>
+        <div class="sendContainer" (click)="submitComment()">
           <img src="../../../assets/icon_send.png" alt="Send logo" />
         </div>
+      </form>
+      <div class="commentHasError">
+        @if (commentHasError) {
+        <p>Comment can't be empty</p>
+        } @else if (commentServiceError) {
+        <p>An error occured, please try again later</p>
+        }
       </div>
     </div>
   </div>

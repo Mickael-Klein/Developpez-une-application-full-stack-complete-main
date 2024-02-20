@@ -1,4 +1,6 @@
-@if(!isLoading) {
+@if (!sessionLoginWithJwtIsLoading) {
 <app-header />
 <router-outlet></router-outlet>
+} @else if (sessionLoginWithJwtIsLoading) {
+<div>loading...</div>
 }

@@ -5,10 +5,7 @@ import { PostResponse } from '../interface/post/response/PostResponse';
 import commentDtoToComment from './commentDtoToComment';
 
 const getPostFromPostResponse = (postResponse: PostResponse): Post => {
-  if (
-    postResponse.commentDtos !== undefined &&
-    postResponse.commentDtos.length > 0
-  ) {
+  if (postResponse.commentDtos) {
     const {
       id,
       title,

@@ -1,1 +1,86 @@
-<p>new-article works!</p>
+<main>
+  <div class="backPageAndTitleContainer">
+    <div class="backArrowContainer" (click)="backToArticles()">
+      <img src="../../../assets/ArrowLeft.png" alt="Back arrow, back home" />
+    </div>
+    <h1>Créer un nouvel article</h1>
+  </div>
+
+  <div class="newArticleFormContainer">
+    <form [formGroup]="postForm">
+      <div class="themeContainer">
+        <select
+          formControlName="theme"
+          (change)="onSelectChange()"
+          [class.notDefault]="themeIsNotPlaceholderSelection"
+        >
+          <option
+            class="selectSubjectPlaceholder"
+            [ngValue]="null"
+            disabled
+            selected
+          >
+            Sélectionner un thème
+          </option>
+          <option
+            *ngFor="let subject of subjectList$ | async"
+            [value]="subject.id"
+          >
+            {{ subject.name }}
+          </option>
+        </select>
+        <div class="errorMessageContainer">
+          @if (themeHasError) {
+          <p>A theme must be selected</p>
+          }
+        </div>
+      </div>
+
+      <div class="titleContainer">
+        <input
+          type="text"
+          name="title"
+          id="title"
+          formControlName="title"
+          placeholder="Titre de l'article"
+        />
+        <div class="errorMessageContainer">
+          @if (titleHasError) {
+          <p>A valid title must be provided (max 60 char)</p>
+          }
+        </div>
+      </div>
+
+      <div class="contentContainer">
+        <textarea
+          name="content"
+          id="content"
+          cols="30"
+          rows="10"
+          formControlName="content"
+          placeholder="Contenu de l'article"
+        ></textarea>
+        <div class="errorMessageContainer">
+          @if (contentHasError) {
+          <p>A valid content must be provided (min 10 char)</p>
+          }
+        </div>
+      </div>
+
+      <div class="postPostResponseContainer">
+        @if (submitSuccess) {
+        <p>Your post was successfully created</p>
+        <p>Redirecting...</p>
+        } @else if (submitHasError) {
+        <p>An error occured, please try again later</p>
+        }
+      </div>
+
+      <app-button
+        [buttonProps]="buttonProps"
+        (click)="onSubmitForm()"
+        class="submitButton"
+      />
+    </form>
+  </div>
+</main>

@@ -14,8 +14,7 @@ import { Subject } from './core/model/Subject.model';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private noAuthRoutes = ['/login', '/register', '/home', '/'];
-  isLoading = true;
+  sessionLoginWithJwtIsLoading = true;
 
   constructor(
     private router: Router,
@@ -24,28 +23,19 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadInitialAuthState();
+    this.sessionService.loginWithLocalStorageJwt();
+
+    this.sessionService.$isLoading().subscribe((isLoading: boolean) => {
+      this.sessionLoginWithJwtIsLoading = isLoading;
+    });
 
     this.sessionService.$isLogged().subscribe((isLogged: boolean) => {
-      let isOnNoAuthRoute = false;
-      const currentUrl = this.router.url;
-      this.noAuthRoutes.forEach((route) => {
-        if (route === currentUrl) {
-          isOnNoAuthRoute = true;
-        }
-      });
-      if (isLogged && isOnNoAuthRoute) {
-        console.log('redirection come from here');
-        this.router.navigateByUrl('/articles');
-      } else if (!isLogged && !isOnNoAuthRoute) {
-        this.router.navigateByUrl('/login');
-      }
-
       // Subjects fetch only if user is logged to avoid access to unauthorized data in network xhr request
       if (isLogged) {
         this.subjectService.getAllSubjects().subscribe({
           next: (subjects: Subject[]) => {
             this.subjectService.subjects = subjects;
+            console.log(this.subjectService.subjects);
           },
           error: (error: any) => {
             console.log('error while fetching subjects');
@@ -53,14 +43,5 @@ export class AppComponent implements OnInit {
         });
       }
     });
-  }
-
-  private loadInitialAuthState(): void {
-    if (!localStorage.getItem('jwt')) {
-      this.isLoading = false;
-    } else {
-      this.sessionService.loginWithLocalStorageJwt();
-      this.isLoading = false;
-    }
   }
 }

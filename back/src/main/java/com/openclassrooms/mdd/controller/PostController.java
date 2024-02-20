@@ -1,5 +1,6 @@
 package com.openclassrooms.mdd.controller;
 
+import com.openclassrooms.mdd.model.Comment;
 import com.openclassrooms.mdd.model.DbUser;
 import com.openclassrooms.mdd.model.Post;
 import com.openclassrooms.mdd.model.Subject;
@@ -13,6 +14,7 @@ import com.openclassrooms.mdd.util.payload.response.DbUserResponse;
 import com.openclassrooms.mdd.util.payload.response.PostResponse;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -92,13 +94,18 @@ public class PostController {
         .setContent(postRequest.getContent())
         .setDbUser(dbUser)
         .setSubject(subject)
-        .setCreatedAt(LocalDateTime.now());
+        .setCreatedAt(LocalDateTime.now())
+        .setComments(new ArrayList<Comment>());
 
       Post savedPost = postService.savePost(post);
 
       return ResponseEntity
         .ok()
-        .body(entityAndDtoCreation.getPostDtoFromPostEntity(savedPost));
+        .body(
+          entityAndDtoCreation.getPostWithCommentsDtoFromPostWithCommentEntity(
+            savedPost
+          )
+        );
     } catch (Exception e) {
       return ResponseEntity.internalServerError().build();
     }

@@ -76,7 +76,14 @@ export class LoginComponent implements OnInit {
     this.userAuthService.login(loginRequest).subscribe({
       next: (response: string) => {
         console.log('response : ', response);
-        this.sessionService.logIn(response);
+        this.sessionService.logIn(response).subscribe((response: boolean) => {
+          if (response) {
+            this.router.navigateByUrl('/articles');
+          } else {
+            this.credentialsError = true;
+            this.credentialsErrorMessage = 'An error occured, try again later';
+          }
+        });
       },
       error: (err: any) => {
         this.credentialsError = true;

@@ -1,0 +1,21 @@
+@import "../../style/globalVariables";
+
+.commentContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-basic;
+
+  .authorNameContainer {
+    width: 20%;
+  }
+
+  .commentContent {
+    width: 78%;
+    height: auto;
+    aspect-ratio: 5 / 1;
+    background-color: $color-background;
+    border-radius: $border-radius-big;
+    padding: 2% 2%;
+  }
+}

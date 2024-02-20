@@ -1,6 +1,7 @@
 @import "../../style/globalVariables";
 
 main {
+  margin-top: 40px;
   width: 100%;
   padding: 0 2%;
   display: flex;
@@ -8,7 +9,6 @@ main {
   align-items: center;
 
   .backArrowAndPostContainer {
-    margin-top: 40px;
     display: flex;
     width: 100%;
     margin-bottom: 30px;
@@ -37,7 +37,7 @@ main {
     .postContainer {
       width: 100%;
       border-bottom: solid 1px black;
-      margin-bottom: 40px;
+      margin-bottom: 25px;
 
       .globalInfoContainer {
         display: flex;
@@ -55,23 +55,72 @@ main {
 
     .commentContainer {
       width: 100%;
+      position: absolute;
+      left: 0;
 
       h3 {
+        padding-left: calc(2% + 100px);
         margin: 25px 0;
         font-size: $font-size-big;
       }
 
-      .comment {
+      .comments {
+        position: relative;
         display: flex;
         flex-direction: column;
+        gap: 45px;
         width: 100%;
-        padding-left: 10%;
+        align-items: center;
+        margin-bottom: 50px;
+
+        .appComment {
+          width: 70%;
+        }
       }
 
       .userNewCommentContainer {
+        position: relative;
         width: 100%;
         display: flex;
-        padding-left: 10%;
+        justify-content: center;
+        align-items: center;
+
+        textarea {
+          width: 70%;
+          height: auto;
+          aspect-ratio: 5 / 1;
+          border-radius: $border-radius-big;
+          padding: 2% 2%;
+          resize: none;
+          font-size: $font-size-basic;
+        }
+
+        .sendContainer {
+          position: absolute;
+          right: 5%;
+          top: 50%;
+          transform: translateY(-45%);
+          cursor: pointer;
+          width: 5%;
+          height: auto;
+          aspect-ratio: 1/1;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+
+      .commentHasError {
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: red;
+        font-size: $font-size-basic;
       }
     }
   }

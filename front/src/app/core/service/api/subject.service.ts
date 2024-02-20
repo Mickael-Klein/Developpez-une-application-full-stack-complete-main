@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map } from 'rxjs';
 import { Subject } from '../../model/Subject.model';
 import getErrorMessageFromCatchedError from './common/errorResponse';
 import { SubjectResponse } from './interface/subject/SubjectResponse';
@@ -12,7 +12,13 @@ export class SubjectService {
   private pathService = 'api/subject/';
   subjects!: Subject[];
 
+  subjectSubject = new BehaviorSubject<Subject[]>(this.subjects);
+
   constructor(private http: HttpClient) {}
+
+  public $getSubjects() {
+    return this.subjectSubject.asObservable();
+  }
 
   public getAllSubjects(): Observable<Subject[]> {
     return this.http.get<SubjectResponse[]>(this.pathService + 'getall').pipe(
@@ -20,6 +26,8 @@ export class SubjectService {
         let subjectArr = response.map((subject: SubjectResponse) =>
           this.getSubjectFromSubjectResponse(subject)
         );
+        this.subjects = subjectArr;
+        this.next();
         return subjectArr;
       }),
       catchError((error: any) => getErrorMessageFromCatchedError(error))
@@ -56,5 +64,9 @@ export class SubjectService {
       const { id, name, description } = response;
       return new Subject(id, name, description);
     }
+  }
+
+  private next() {
+    this.subjectSubject.next(this.subjects);
   }
 }

@@ -1,0 +1,27 @@
+<div class="themeCard">
+  <div class="themeCardContent">
+    <h3>{{ themeCardProps.subjectName }}</h3>
+    <p>{{ themeCardProps.subjectContent }}</p>
+  </div>
+  @if (!themeCardProps.isForUnsubscribe) {
+  <app-button
+    *ngIf="(user$ | async)?.subjectIds?.includes(subjectId)"
+    [buttonProps]="buttonPropsIsSub"
+    class="button"
+  />
+  <app-button
+    *ngIf="!(user$ | async)?.subjectIds?.includes(subjectId)"
+    [buttonProps]="buttonPropsNotSub"
+    class="button"
+    (click)="subscribeToSubject()"
+  />
+  } @else {
+  <app-button
+    [buttonProps]="buttonPropsUnsubscribe"
+    class="button"
+    (click)="unsubscribeFromSubject()"
+  />
+  } @if (isError) {
+  <p class="error">An error occured, please try again later</p>
+  }
+</div>

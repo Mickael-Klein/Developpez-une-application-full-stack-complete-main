@@ -16,6 +16,8 @@ export class SessionService {
   private isLoggedSubject = new BehaviorSubject<boolean>(this.isLogged);
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
 
+  private userSubject = new BehaviorSubject<User | undefined>(this.user);
+
   constructor(private userService: UserService) {}
 
   public $isLogged(): Observable<boolean> {
@@ -24,6 +26,10 @@ export class SessionService {
 
   public $isLoading(): Observable<boolean> {
     return this.isLoadingSubject.asObservable();
+  }
+
+  public $getUser(): Observable<User | undefined> {
+    return this.userSubject.asObservable();
   }
 
   public loginWithLocalStorageJwt(): void {
@@ -95,7 +101,13 @@ export class SessionService {
     this.isLoading = value;
   }
 
+  public updateUser(user: User) {
+    this.user = user;
+    this.userSubject.next(this.user);
+  }
+
   private next(): void {
     this.isLoggedSubject.next(this.isLogged);
+    this.userSubject.next(this.user);
   }
 }

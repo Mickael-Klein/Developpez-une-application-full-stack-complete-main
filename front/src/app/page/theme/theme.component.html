@@ -1,1 +1,10 @@
-<p>theme works!</p>
+<main>
+  @for (subject of subjectList$ | async ; track subject.id) {
+  <app-theme-card
+    [themeCardProps]="toThemeCardProps(subject)"
+    class="appThemeCard"
+  />
+  } @if (subjectFetchError) {
+  <p class="error">An error occured, please try again later</p>
+  }
+</main>

@@ -1,1 +1,67 @@
-<p>me works!</p>
+<main>
+  <h1>Profil utilisateur</h1>
+  <div class="formContainer">
+    <form [formGroup]="updateUserForm">
+      <div class="formInputContainer">
+        <input type="text" id="username" formControlName="username" />
+        <div class="errorContainer">
+          @if (usernameError) {
+          <p>A valid username is required</p>
+          } @else if (usernameAlreadyTaken) {
+          <p>Username is already taken</p>
+          }
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <input type="email" id="email" formControlName="email" />
+        <div class="errorContainer">
+          @if (emailError) {
+          <p>A valid email is required</p>
+          } @else if (emailAlreadyTaken) {
+          <p>Email is already taken</p>
+          }
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Password"
+        />
+        <div class="errorContainer">
+          @if (passwordError) {
+          <p>
+            Password must contains at least: 8 chars, 1 lowercase, 1 uppercase,
+            1 number, 1 special char
+          </p>
+          } @else if (updateUserError) {
+          <p>An error occured, please try again later</p>
+          } @else if (updateUserSuccess) {
+          <p class="updateUserSuccess">
+            Your profile was updated successfully !
+          </p>
+          }
+        </div>
+      </div>
+      <app-button
+        [buttonProps]="submitFormButtonProps"
+        (click)="updateUser()"
+        class="submitButton"
+      />
+    </form>
+    <button class="logoutButton" (click)="logout()">Se déconnecter</button>
+  </div>
+  <div class="subscription">
+    <h1>Abonnements</h1>
+    <div class="subscriptionContainer">
+      @for (subject of subjects$ | async; track subject.id) {
+      <app-theme-card
+        *ngIf="(user$ | async)?.subjectIds?.includes(subject.id)"
+        [themeCardProps]="toThemeCardProps(subject)"
+        class="appThemeCard"
+      />
+      }
+    </div>
+  </div>
+</main>

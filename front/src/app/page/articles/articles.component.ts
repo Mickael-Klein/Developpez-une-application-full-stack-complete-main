@@ -4,11 +4,22 @@ import { SubjectService } from '../../core/service/api/subject.service';
 import { Router } from '@angular/router';
 import { Subject } from '../../core/model/Subject.model';
 import { Post } from '../../core/model/Post.model';
-import { from, mergeMap } from 'rxjs';
+import {
+  Observable,
+  filter,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+  toArray,
+} from 'rxjs';
 import { ButtonComponent } from '../../component/button/button.component';
 import { Button } from '../../interface/Button.interface';
 import { PostCardComponent } from '../../component/post-card/post-card.component';
 import { CommonModule } from '@angular/common';
+import { User } from '../../core/model/User.model';
 
 @Component({
   selector: 'app-articles',
@@ -18,11 +29,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './articles.component.scss',
 })
 export class ArticlesComponent implements OnInit {
-  subscription: number[] = [];
+  subscription$!: Observable<number[]>;
   subjects: Subject[] = [];
   orderedPostsByDate: Post[] = [];
   isLoading = true;
   error = false;
+  subjectNumber = 0;
+  subjectCount = 0;
 
   buttonProps: Button = {
     text: 'Créer un article',
@@ -38,37 +51,62 @@ export class ArticlesComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.subscription = this.sessionService.user?.subjectIds || [];
+    this.subscription$ = this.sessionService.$getUser().pipe(
+      filter((user) => user !== undefined),
+      map((user) => {
+        if (user?.subjectIds) {
+          return user.subjectIds;
+        } else {
+          return [];
+        }
+      })
+    );
 
-    const subjects$ =
-      this.subscription.length > 0
-        ? from(this.subscription).pipe(
+    const subjects$ = this.subscription$.pipe(
+      switchMap((subscription) => {
+        if (subscription.length > 0) {
+          this.subjectNumber = subscription.length;
+          return from(subscription).pipe(
             mergeMap((subId) =>
               this.subjectService.getSubjectWithPostById(subId)
             )
-          )
-        : from(this.subjectService.subjects).pipe(
-            mergeMap((subject: Subject) =>
-              this.subjectService.getSubjectWithPostById(subject.id)
-            )
           );
+        } else {
+          return this.subjectService.$getSubjects().pipe(
+            switchMap((subjects) => {
+              if (subjects && subjects.length > 0) {
+                this.subjectNumber = subjects.length;
+                return from(subjects).pipe(
+                  mergeMap((subject: Subject) =>
+                    this.subjectService.getSubjectWithPostById(subject.id)
+                  )
+                );
+              } else {
+                return of();
+              }
+            })
+          );
+        }
+      })
+    );
 
     subjects$.subscribe({
       next: (subject: Subject) => {
+        this.subjectCount++;
         if (subject.post) {
           subject.post.forEach((post: Post) => {
             this.orderedPostsByDate.push(post);
           });
         }
+        if (this.subjectCount === this.subjectNumber) {
+          this.orderedPostsByDate = this.orderPostArrByDateDesc();
+          console.log(this.orderedPostsByDate);
+          this.isLoading = false;
+        }
       },
       error: (error: any) => {
         console.log(error);
         this.error = true;
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.orderedPostsByDate = this.orderPostArrByDateDesc();
-        console.log(this.orderedPostsByDate);
         this.isLoading = false;
       },
     });

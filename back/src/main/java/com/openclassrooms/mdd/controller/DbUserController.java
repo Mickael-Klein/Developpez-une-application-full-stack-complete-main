@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -135,7 +134,7 @@ public class DbUserController {
       updatedDbUser.setPosts(dbUser.getPosts());
       updatedDbUser.setSubjects(dbUser.getSubjects());
 
-      if (updateProfileRequest.getEmail() != dbUser.getEmail()) {
+      if (!updateProfileRequest.getEmail().equals(dbUser.getEmail())) {
         boolean isEmailAlreadyTaken = dbUserService.isEmailAlreadyTaken(
           updateProfileRequest.getEmail()
         );
@@ -152,7 +151,7 @@ public class DbUserController {
         updatedDbUser.setEmail(dbUser.getEmail());
       }
 
-      if (updateProfileRequest.getUsername() != dbUser.getUsername()) {
+      if (!updateProfileRequest.getUsername().equals(dbUser.getUsername())) {
         boolean isUsernameAlreadyTaken = dbUserService.isUsernameAlreadyTaken(
           updateProfileRequest.getUsername()
         );
@@ -169,7 +168,7 @@ public class DbUserController {
         updatedDbUser.setUsername(dbUser.getUsername());
       }
 
-      if (updateProfileRequest.getPassword().length() > 0) {
+      if (updateProfileRequest.getPassword() != null) {
         updatedDbUser.setPassword(
           bCryptPasswordEncoder.encode(updateProfileRequest.getPassword())
         );
@@ -182,7 +181,9 @@ public class DbUserController {
       return ResponseEntity
         .ok()
         .body(
-          entityAndDtoCreation.getDbUserDtoFromDbUserEntity(savedUpdatedDbUser)
+          entityAndDtoCreation.getDbUserWithSubIdsFromDbUserWithSubEntity(
+            savedUpdatedDbUser
+          )
         );
     } catch (Exception e) {
       System.err.println(e);

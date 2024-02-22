@@ -1,0 +1,101 @@
+@import "../../style/globalVariables";
+
+main {
+  width: 100%;
+  padding: 0 2%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: $font-size-basic;
+
+  h1 {
+    font-size: $font-size-h1;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+
+  .formContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: solid 1px black;
+    padding-bottom: 30px;
+
+    form {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+
+      .formInputContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        input {
+          width: 100%;
+          height: 50px;
+          border: solid 2px $color-primary;
+          border-radius: $border-radius-big;
+          padding-left: 1rem;
+        }
+
+        .errorContainer {
+          height: 15px;
+          color: red;
+        }
+
+        .updateUserSuccess {
+          color: $color-primary;
+        }
+      }
+
+      .submitButton {
+        margin-top: 5px;
+      }
+    }
+
+    .logoutButton {
+      background-color: transparent;
+      border: none;
+      font-size: calc($font-size-basic - 2px);
+      color: #a40f0f;
+      font-weight: 700;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .subscription {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .subscriptionContainer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+
+      .appThemeCard {
+        width: 49%;
+      }
+    }
+  }
+}

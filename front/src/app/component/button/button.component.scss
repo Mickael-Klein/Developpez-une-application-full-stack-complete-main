@@ -6,7 +6,19 @@
   color: white;
 }
 
+.unclickable {
+  background-color: darkgrey;
+  border: none;
+  color: white;
+  cursor: default;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 button {
+  box-sizing: border-box;
   padding: 0.5rem 1rem;
   width: 100%;
   max-width: 220px;

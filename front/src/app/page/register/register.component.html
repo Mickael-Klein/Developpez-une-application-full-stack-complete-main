@@ -3,7 +3,13 @@
     <img src="../../../assets/ArrowLeft.png" alt="Arrow left, back to home" />
   </div>
 
-  <h1>S'inscrire</h1>
+  @if (responsiveImageShouldBeDisplay) {
+  <div class="mobileImageContainer">
+    <img src="../../../assets/logo_p6.png" alt="Mdd Logo" />
+  </div>
+  }
+
+  <h1>Inscription</h1>
 
   <form [formGroup]="registerForm">
     <div class="formInputContainer">
@@ -31,7 +37,7 @@
         <label for="password">Mot de passe </label>
         <input type="password" id="password" formControlName="password" />
       </div>
-      <div class="errorMessageContainer">
+      <div class="errorMessageContainer long">
         <p [class.hasError]="passwordHasError">
           Le mot de passe doit au minimum contenir: 8 caractères, 1 minuscule, 1
           majuscule, 1 chiffre, 1 caractère spécial

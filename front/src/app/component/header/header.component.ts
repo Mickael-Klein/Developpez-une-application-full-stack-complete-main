@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { SessionService } from '../../core/service/session/session.service';
 import { NavComponent } from '../nav/nav.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteService } from '../../core/service/route/route.service';
+import { MobileNav } from '../../interface/MobileNav.interface';
 
 @Component({
   selector: 'app-header',
@@ -14,12 +15,23 @@ import { RouteService } from '../../core/service/route/route.service';
 export class HeaderComponent implements OnInit {
   isLogged!: boolean;
   headerShouldBeDisplay = true;
+  screenWidth!: number;
+  isMobileVersion = false;
+  toogleSideNav = false;
 
   constructor(
     private sessionService: SessionService,
     private router: Router,
-    private routeService: RouteService
+    private routeService: RouteService,
+    private renderer2: Renderer2
   ) {}
+
+  navPropsDesktop: MobileNav = {
+    isMobileVersion: false,
+  };
+  navPropsMobile: MobileNav = {
+    isMobileVersion: true,
+  };
 
   ngOnInit(): void {
     this.sessionService.$isLogged().subscribe({
@@ -34,6 +46,41 @@ export class HeaderComponent implements OnInit {
       } else {
         this.headerShouldBeDisplay = true;
       }
+
+      this.screenWidth = window.innerWidth;
+
+      if (currentRoute === '/login' || currentRoute === '/register') {
+        if (this.screenWidth < 769) {
+          this.headerShouldBeDisplay = false;
+        }
+        this.renderer2.listen(window, 'resize', (event) => {
+          this.screenWidth = window.innerWidth;
+          if (this.screenWidth < 769) {
+            this.headerShouldBeDisplay = false;
+          } else {
+            this.headerShouldBeDisplay = true;
+          }
+        });
+      }
+
+      if (
+        currentRoute !== '/home' &&
+        currentRoute !== '/' &&
+        currentRoute !== '/login' &&
+        currentRoute !== 'register'
+      ) {
+        if (this.screenWidth < 769) {
+          this.isMobileVersion = true;
+        }
+        this.renderer2.listen(window, 'resize', (event) => {
+          this.screenWidth = window.innerWidth;
+          if (this.screenWidth < 769) {
+            this.isMobileVersion = true;
+          } else {
+            this.isMobileVersion = false;
+          }
+        });
+      }
     });
   }
 
@@ -43,5 +90,9 @@ export class HeaderComponent implements OnInit {
     } else {
       this.router.navigateByUrl('/articles');
     }
+  }
+
+  onBurgerMenuClick() {
+    this.toogleSideNav = !this.toogleSideNav;
   }
 }

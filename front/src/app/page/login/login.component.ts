@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { UserAuthService } from '../../core/service/api/user-auth.service';
 import { SessionService } from '../../core/service/session/session.service';
 import { Router } from '@angular/router';
@@ -25,6 +25,8 @@ export class LoginComponent implements OnInit {
   passwordHasError = false;
   credentialsError = false;
   credentialsErrorMessage = '';
+  screenWidth!: number;
+  responsiveImageShouldBeDisplay = false;
 
   buttonProps: Button = { colored: true, text: 'Se connecter' };
 
@@ -32,13 +34,28 @@ export class LoginComponent implements OnInit {
     private userAuthService: UserAuthService,
     private sessionService: SessionService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private renderer2: Renderer2
   ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       emailOrUsername: [null, [Validators.required]],
       password: [null, [Validators.required]],
+    });
+
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth < 769) {
+      this.responsiveImageShouldBeDisplay = true;
+    }
+
+    this.renderer2.listen(window, 'resize', (event) => {
+      this.screenWidth = window.innerWidth;
+      if (this.screenWidth < 769) {
+        this.responsiveImageShouldBeDisplay = true;
+      } else {
+        this.responsiveImageShouldBeDisplay = false;
+      }
     });
   }
 

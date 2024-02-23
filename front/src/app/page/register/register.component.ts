@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -25,13 +25,16 @@ export class RegisterComponent implements OnInit {
   passwordHasError = false;
   registerFormHasError = false;
   registerErrorMessage = '';
+  screenWidth!: number;
+  responsiveImageShouldBeDisplay = false;
 
   buttonProps: Button = { colored: true, text: "S'inscrire" };
 
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private renderer2: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +50,20 @@ export class RegisterComponent implements OnInit {
           ),
         ],
       ],
+    });
+
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth < 769) {
+      this.responsiveImageShouldBeDisplay = true;
+    }
+
+    this.renderer2.listen(window, 'resize', (event) => {
+      this.screenWidth = window.innerWidth;
+      if (this.screenWidth < 769) {
+        this.responsiveImageShouldBeDisplay = true;
+      } else {
+        this.responsiveImageShouldBeDisplay = false;
+      }
     });
   }
 

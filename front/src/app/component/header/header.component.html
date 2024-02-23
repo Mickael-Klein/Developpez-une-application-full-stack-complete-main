@@ -4,8 +4,17 @@
     <img src="../../../assets/logo_p6_small.png" alt="Logo MDD" />
   </div>
 
-  @if (isLogged) {
-  <app-nav />
-  }
+  @if (isLogged) { @if (!isMobileVersion) {
+  <app-nav [mobileVersionProps]="navPropsDesktop" />
+  } @else {
+  <div class="burgerMenuImageContainer" (click)="onBurgerMenuClick()">
+    <img src="../../../assets/burgerLogo.png" alt="Burger menu logo" />
+  </div>
+  <app-nav
+    class="sideNav"
+    [class.isDisplay]="toogleSideNav"
+    [mobileVersionProps]="navPropsMobile"
+  />
+  } }
 </header>
 }

@@ -1,4 +1,4 @@
-<nav>
+<nav [ngClass]="{ isMobileVersion: mobileVersionProps.isMobileVersion }">
   <div class="navLinkContainer">
     <a [class.active]="isOnArticlesPage" routerLink="/articles">Articles</a>
   </div>

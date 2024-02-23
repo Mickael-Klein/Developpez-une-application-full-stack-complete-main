@@ -3,6 +3,12 @@
     <img src="../../../assets/ArrowLeft.png" alt="Arrow left, back to home" />
   </div>
 
+  @if (responsiveImageShouldBeDisplay) {
+  <div class="mobileImageContainer">
+    <img src="../../../assets/logo_p6.png" alt="Mdd Logo" />
+  </div>
+  }
+
   <h1>Se connecter</h1>
 
   <form [formGroup]="loginForm">

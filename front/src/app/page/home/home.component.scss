@@ -5,10 +5,14 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 100px;
+  gap: 70px;
 
   .imgContainer {
     width: 45%;
+
+    @media screen and (max-width: 768px) {
+      width: 70%;
+    }
 
     img {
       object-fit: cover;
@@ -20,14 +24,21 @@ main {
   .buttonContainer {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     width: 45%;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    gap: 20px;
+
+    @media screen and (max-width: 768px) {
+      width: 50%;
+      flex-direction: column;
+      gap: 50px;
+    }
 
     .homeButton {
       width: 45%;
       white-space: nowrap;
+      min-width: 150px;
     }
   }
 }

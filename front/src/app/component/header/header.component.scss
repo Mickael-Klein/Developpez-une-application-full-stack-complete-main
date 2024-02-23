@@ -18,4 +18,18 @@ header {
       object-fit: cover;
     }
   }
+
+  .sideNav {
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 1s ease-in-out;
+  }
+
+  .isDisplay {
+    transform: translateX(0%);
+  }
 }

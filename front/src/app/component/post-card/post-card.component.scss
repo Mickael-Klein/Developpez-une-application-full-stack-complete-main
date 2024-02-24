@@ -11,6 +11,10 @@
   gap: 15px;
   cursor: pointer;
 
+  @media screen and (max-width: 768px) {
+    gap: 0;
+  }
+
   &:hover {
     box-shadow: rgba(38, 57, 77, 0.3) 0px 20px 30px -10px;
   }
@@ -37,6 +41,30 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       white-space: pre-wrap;
+
+      @media screen and (max-width: 1350px) {
+        -webkit-line-clamp: 6;
+      }
+
+      @media screen and (max-width: 1250px) {
+        -webkit-line-clamp: 5;
+      }
+
+      @media screen and (max-width: 1150px) {
+        -webkit-line-clamp: 4;
+      }
+      @media screen and (max-width: 1025px) {
+        -webkit-line-clamp: 6;
+      }
+      @media screen and (max-width: 768px) {
+        -webkit-line-clamp: 4;
+      }
+      @media screen and (max-width: 400px) {
+        -webkit-line-clamp: 3;
+      }
+      @media screen and (max-width: 360px) {
+        -webkit-line-clamp: 2;
+      }
     }
   }
 }

@@ -15,6 +15,10 @@
   .themeCardContent {
     width: 100%;
 
+    @media screen and (max-width: 768px) {
+      margin-bottom: 50px;
+    }
+
     h3 {
       font-size: $font-size-card-title;
       font-weight: bold;
@@ -26,6 +30,11 @@
       -webkit-line-clamp: 3;
       line-clamp: 3;
       -webkit-box-orient: vertical;
+
+      @media screen and (max-width: 768px) {
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+      }
     }
   }
 

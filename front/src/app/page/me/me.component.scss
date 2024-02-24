@@ -2,7 +2,7 @@
 
 main {
   width: 100%;
-  padding: 0 2%;
+  padding: 0 3%;
   margin-top: 40px;
   display: flex;
   flex-direction: column;
@@ -23,6 +23,10 @@ main {
     border-bottom: solid 1px black;
     padding-bottom: 30px;
 
+    @media screen and (max-width: 768px) {
+      width: 95%;
+    }
+
     form {
       width: 40%;
       display: flex;
@@ -30,6 +34,10 @@ main {
       align-items: center;
       gap: 15px;
       margin-bottom: 10px;
+
+      @media screen and (max-width: 768px) {
+        width: 95%;
+      }
 
       .formInputContainer {
         width: 100%;
@@ -48,6 +56,12 @@ main {
         .errorContainer {
           height: 15px;
           color: red;
+        }
+
+        .passwordErrorContainer {
+          @media screen and (max-width: 768px) {
+            height: 25px;
+          }
         }
 
         .updateUserSuccess {
@@ -83,6 +97,10 @@ main {
 
     h1 {
       margin-bottom: 20px;
+
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
     }
 
     .subscriptionContainer {
@@ -95,6 +113,10 @@ main {
 
       .appThemeCard {
         width: 49%;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
       }
     }
   }

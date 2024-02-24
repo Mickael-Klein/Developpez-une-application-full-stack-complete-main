@@ -1,7 +1,7 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, signal } from '@angular/core';
 import { SessionService } from '../../core/service/session/session.service';
 import { NavComponent } from '../nav/nav.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouteService } from '../../core/service/route/route.service';
 import { MobileNav } from '../../interface/MobileNav.interface';
 
@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   headerShouldBeDisplay = true;
   screenWidth!: number;
   isMobileVersion = false;
+
   toogleSideNav = false;
 
   constructor(
@@ -93,6 +94,10 @@ export class HeaderComponent implements OnInit {
   }
 
   onBurgerMenuClick() {
-    this.toogleSideNav = !this.toogleSideNav;
+    this.toogleSideNav = true;
+  }
+
+  onOverlayClick() {
+    this.toogleSideNav = false;
   }
 }

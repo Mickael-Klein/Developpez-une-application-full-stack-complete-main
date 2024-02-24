@@ -4,18 +4,30 @@ main {
   width: 100%;
   padding-top: 50px;
   padding-left: 3%;
-  padding-right: 5%;
+  padding-right: 3%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    padding-top: 35px;
+  }
 
   .userControlContainer {
     display: flex;
     justify-content: space-between;
     margin-bottom: 50px;
 
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
     p {
       font-size: $font-size-big;
+      font-weight: bold;
     }
   }
 
@@ -32,6 +44,11 @@ main {
       height: auto;
       aspect-ratio: 2/1;
       margin-bottom: 50px;
+
+      @media screen and (max-width: 768px) {
+        min-width: 0px;
+        width: 100%;
+      }
     }
   }
 }

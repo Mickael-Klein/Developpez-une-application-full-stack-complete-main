@@ -29,6 +29,11 @@ button {
   border-radius: $border-radius;
   background-color: transparent;
 
+  @media screen and (max-width: 768px) {
+    max-width: 280px;
+    font-size: 22px;
+  }
+
   &:hover {
     text-decoration: underline;
   }

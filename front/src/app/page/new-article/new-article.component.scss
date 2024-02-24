@@ -2,7 +2,7 @@
 
 main {
   width: 100%;
-  padding: 0 2%;
+  padding: 0 3%;
   font-size: $font-size-basic;
   margin-top: 40px;
 
@@ -12,6 +12,14 @@ main {
     height: 35px;
     position: relative;
     margin-bottom: 45px;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+      margin-bottom: 25px;
+      gap: 25px;
+    }
 
     .backArrowContainer {
       display: flex;
@@ -25,17 +33,34 @@ main {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+
+      @media screen and (max-width: 768px) {
+        position: static;
+        left: auto;
+        transform: none;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+      }
     }
   }
 
   .errorMessageContainer {
     height: 15px;
     color: red;
+
+    @media screen and (max-width: 768px) {
+      height: 30px;
+    }
   }
 
   .newArticleFormContainer {
     width: 33%;
     margin: auto;
+
+    @media screen and (max-width: 768px) {
+      width: 85%;
+    }
 
     form {
       width: 100%;

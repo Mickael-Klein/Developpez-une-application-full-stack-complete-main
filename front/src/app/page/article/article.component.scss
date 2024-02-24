@@ -3,7 +3,7 @@
 main {
   margin-top: 40px;
   width: 100%;
-  padding: 0 2%;
+  padding: 0 3%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,16 +34,37 @@ main {
     width: 100%;
     padding-left: 100px;
 
+    @media screen and (max-width: 768px) {
+      padding-left: 0;
+    }
+
     .postContainer {
       width: 100%;
       border-bottom: solid 1px black;
       margin-bottom: 25px;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 0px;
+      }
 
       .globalInfoContainer {
         display: flex;
         gap: 10%;
         font-size: $font-size-big;
         margin-bottom: 25px;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          flex-wrap: wrap;
+          margin-bottom: 5px;
+        }
+
+        .postInfo {
+          @media screen and (max-width: 768px) {
+            width: 30%;
+            margin-bottom: 30px;
+          }
+        }
       }
 
       .content {
@@ -58,10 +79,19 @@ main {
       position: absolute;
       left: 0;
 
+      @media screen and (max-width: 768px) {
+        position: static;
+      }
+
       h3 {
         padding-left: calc(2% + 100px);
         margin: 25px 0;
         font-size: $font-size-big;
+
+        @media screen and (max-width: 768px) {
+          padding-left: 0;
+          margin: 15px 0;
+        }
       }
 
       .comments {
@@ -75,6 +105,10 @@ main {
 
         .appComment {
           width: 70%;
+
+          @media screen and (max-width: 768px) {
+            width: 95%;
+          }
         }
       }
 
@@ -85,6 +119,12 @@ main {
         justify-content: center;
         align-items: center;
 
+        @media screen and (max-width: 768px) {
+          width: 106%;
+          position: relative;
+          right: 3%;
+        }
+
         textarea {
           width: 70%;
           height: auto;
@@ -93,6 +133,12 @@ main {
           padding: 2% 2%;
           resize: none;
           font-size: $font-size-basic;
+
+          @media screen and (max-width: 768px) {
+            width: 100%;
+            padding-right: 30%;
+            aspect-ratio: 1/0.4;
+          }
         }
 
         .sendContainer {
@@ -104,6 +150,10 @@ main {
           width: 5%;
           height: auto;
           aspect-ratio: 1/1;
+
+          @media screen and (max-width: 768px) {
+            width: 15%;
+          }
 
           img {
             width: 100%;
@@ -121,6 +171,10 @@ main {
         align-items: center;
         color: red;
         font-size: $font-size-basic;
+
+        @media screen and (max-width: 768px) {
+          height: 30px;
+        }
       }
     }
   }

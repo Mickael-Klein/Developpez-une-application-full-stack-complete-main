@@ -22,9 +22,9 @@ export class ThemeCardComponent implements OnInit {
   subjectId!: number;
   isError = false;
 
-  buttonPropsNotSub: Button = { text: "S'inscrire", colored: true };
+  buttonPropsNotSub: Button = { text: "S'abonner", colored: true };
   buttonPropsIsSub: Button = {
-    text: "S'inscrire",
+    text: "S'abonner",
     colored: false,
     unclickable: true,
   };

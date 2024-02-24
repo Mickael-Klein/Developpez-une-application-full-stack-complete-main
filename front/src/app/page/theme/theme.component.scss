@@ -1,16 +1,25 @@
 main {
   margin-top: 40px;
   width: 100%;
-  padding: 0 2%;
+  padding: 0 3%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   row-gap: 45px;
   column-gap: 15px;
 
+  @media screen and (max-width: 768px) {
+  }
+
   .appThemeCard {
     width: 49%;
     min-width: 450px;
+    margin-bottom: 5px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      min-width: 0px;
+    }
   }
 
   .error {

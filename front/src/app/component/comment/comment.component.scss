@@ -6,8 +6,18 @@
   justify-content: space-between;
   font-size: $font-size-basic;
 
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
+
   .authorNameContainer {
     width: 20%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   .commentContent {
@@ -17,5 +27,11 @@
     background-color: $color-background;
     border-radius: $border-radius-big;
     padding: 2% 2%;
+
+    @media screen and (max-width: 768px) {
+      width: 60%;
+      aspect-ratio: unset;
+      background-color: transparent;
+    }
   }
 }

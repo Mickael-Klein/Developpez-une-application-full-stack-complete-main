@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling post-related operations.
+ */
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
@@ -53,6 +56,14 @@ public class PostController {
   @Autowired
   private DbUserResponse dbUserResponse;
 
+  /**
+   * Creates a new post.
+   *
+   * @param jwt             The JWT token obtained from the request.
+   * @param postRequest     The request payload containing post data.
+   * @param bindingResult   The result of validation on the request payload.
+   * @return                ResponseEntity containing the created post DTO and HTTP status.
+   */
   @PostMapping("/create")
   public ResponseEntity<?> createPost(
     @AuthenticationPrincipal Jwt jwt,
@@ -111,6 +122,12 @@ public class PostController {
     }
   }
 
+  /**
+   * Retrieves a post by its ID.
+   *
+   * @param postId  The ID of the post to retrieve.
+   * @return        ResponseEntity containing the retrieved post DTO and HTTP status.
+   */
   @GetMapping("/getpost/{postId}")
   public ResponseEntity<?> getPostById(@PathVariable final long postId) {
     try {

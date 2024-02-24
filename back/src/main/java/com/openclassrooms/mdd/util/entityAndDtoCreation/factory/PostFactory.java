@@ -7,12 +7,21 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Factory class for creating Post DTOs.
+ */
 @Component
 public class PostFactory {
 
   @Autowired
   private CommentFactory commentFactory;
 
+  /**
+   * Converts a Post entity to a PostDto.
+   *
+   * @param post The Post entity to convert.
+   * @return The corresponding PostDto.
+   */
   public PostDto getPostDtoFromPostEntity(Post post) {
     return new PostDto()
       .setId(post.getId())
@@ -25,6 +34,12 @@ public class PostFactory {
       .setCreatedAt(post.getCreatedAt());
   }
 
+  /**
+   * Converts a list of Post entities to a list of PostDto objects.
+   *
+   * @param postList The list of Post entities to convert.
+   * @return The list of corresponding PostDto objects.
+   */
   public List<PostDto> getPostDtoListFromPostEntityList(List<Post> postList) {
     return postList
       .stream()
@@ -32,6 +47,12 @@ public class PostFactory {
       .collect(Collectors.toList());
   }
 
+  /**
+   * Converts a Post entity with associated comments to a PostDto with comment DTOs.
+   *
+   * @param post The Post entity with associated comments.
+   * @return The corresponding PostDto with comment DTOs.
+   */
   public PostDto getPostWithCommentToDto(Post post) {
     return new PostDto()
       .setId(post.getId())

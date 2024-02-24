@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling user authentication-related operations.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class DbUserAuthController {
@@ -33,12 +36,19 @@ public class DbUserAuthController {
   @Autowired
   private EntityAndDtoCreation entityAndDtoCreation;
 
+  /**
+   * Endpoint for registering a new user account.
+   * @param registerRequest The request payload containing registration data.
+   * @param bindingResult The result of request payload validation.
+   * @return ResponseEntity containing the response to the registration request.
+   */
   @PostMapping("/register")
   public ResponseEntity<?> registerAccount(
     @Valid @RequestBody RegisterRequest registerRequest,
     BindingResult bindingResult
   ) {
     try {
+      // Check if the request payload is invalid
       boolean isRequestPayloadInvalid = bindingResult.hasErrors();
       if (isRequestPayloadInvalid) {
         return ResponseEntity
@@ -48,6 +58,7 @@ public class DbUserAuthController {
           );
       }
 
+      // Check if the email is already registered
       boolean isEmailAlreadyRegistered = dbUserService.isEmailAlreadyTaken(
         registerRequest.getEmail()
       );
@@ -59,6 +70,7 @@ public class DbUserAuthController {
           );
       }
 
+      // Check if the username is already taken
       boolean isUsernameAlreadyTaken = dbUserService.isUsernameAlreadyTaken(
         registerRequest.getUsername()
       );
@@ -70,10 +82,11 @@ public class DbUserAuthController {
           );
       }
 
-      DbUser factoryUser = entityAndDtoCreation.getDbUserFromRegisterRequest(
+      // Create and save the user
+      DbUser newUser = entityAndDtoCreation.getDbUserFromRegisterRequest(
         registerRequest
       );
-      dbUserService.saveUser(factoryUser);
+      dbUserService.saveUser(newUser);
 
       return ResponseEntity.ok().build();
     } catch (Exception e) {
@@ -81,12 +94,19 @@ public class DbUserAuthController {
     }
   }
 
+  /**
+   * Endpoint for user login.
+   * @param loginRequest The request payload containing login credentials.
+   * @param bindingResult The result of request payload validation.
+   * @return ResponseEntity containing the response to the login request.
+   */
   @PostMapping("/login")
   public ResponseEntity<?> loginAccount(
     @Valid @RequestBody LoginRequest loginRequest,
     BindingResult bindingResult
   ) {
     try {
+      // Check if the request payload is invalid
       boolean isRequestPayloadInvalid = bindingResult.hasErrors();
       if (isRequestPayloadInvalid) {
         return ResponseEntity
@@ -94,6 +114,7 @@ public class DbUserAuthController {
           .body(dbUserAuthResponse.getLoginBadCredentialsResponseMessage());
       }
 
+      // Check if the user exists
       DbUser dbUser = doesUserExist(loginRequest.getEmailOrUsername());
 
       if (dbUser == null) {
@@ -102,6 +123,7 @@ public class DbUserAuthController {
           .body(dbUserAuthResponse.getLoginBadCredentialsResponseMessage());
       }
 
+      // Check if the password is correct
       boolean isPasswordCorrect = dbUserService.isPasswordValid(
         loginRequest.getPassword(),
         dbUser
@@ -113,6 +135,7 @@ public class DbUserAuthController {
           .body(dbUserAuthResponse.getLoginBadCredentialsResponseMessage());
       }
 
+      // Generate JWT token
       String jwtToken = jwtService.generateToken(dbUser.getId());
 
       return ResponseEntity
@@ -123,16 +146,21 @@ public class DbUserAuthController {
     }
   }
 
+  /**
+   * Helper method to check if a user exists based on email or username.
+   * @param emailOrUsername The email or username provided in the login request.
+   * @return The user if found, otherwise null.
+   */
   private DbUser doesUserExist(String emailOrUsername) {
-    Optional<DbUser> optionalDbUser = dbUserService.getUserByEmail(
+    Optional<DbUser> optionalDbUserByEmail = dbUserService.getUserByEmail(
       emailOrUsername
     );
     Optional<DbUser> optionalDbUserByUsername = dbUserService.getUserByUsername(
       emailOrUsername
     );
 
-    if (optionalDbUser.isPresent()) {
-      return optionalDbUser.get();
+    if (optionalDbUserByEmail.isPresent()) {
+      return optionalDbUserByEmail.get();
     }
 
     if (optionalDbUserByUsername.isPresent()) {

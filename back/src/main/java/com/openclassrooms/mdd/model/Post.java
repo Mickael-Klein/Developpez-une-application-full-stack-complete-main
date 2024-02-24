@@ -22,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Model class representing a post entity.
+ */
 @Data
 @Accessors(chain = true)
 @Builder
@@ -32,34 +35,41 @@ import lombok.experimental.Accessors;
 @Table(name = "post")
 public class Post {
 
+  /** The unique identifier of the post. */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  /** The title of the post. */
   @NotNull
   @Size(max = 60)
   @Column(name = "title")
   private String title;
 
+  /** The content of the post. */
   @NotNull
   @Size(min = 10)
   @Column(name = "content")
   private String content;
 
+  /** The user who authored the post. */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id")
   private DbUser dbUser;
 
+  /** The subject to which the post belongs. */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "subject_id")
   private Subject subject;
 
+  /** The date and time when the post was created. */
   @NotNull
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
+  /** The list of comments associated with the post. */
   @OneToMany(
     mappedBy = "post",
     cascade = CascadeType.ALL,

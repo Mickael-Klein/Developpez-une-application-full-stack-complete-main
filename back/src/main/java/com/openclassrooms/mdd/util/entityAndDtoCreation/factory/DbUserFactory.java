@@ -11,12 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Factory class for creating DbUser entities and DTOs.
+ */
 @Component
 public class DbUserFactory {
 
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  /**
+   * Converts a RegisterRequest payload to a DbUser entity.
+   *
+   * @param registerRequest The RegisterRequest payload.
+   * @return The corresponding DbUser entity.
+   */
   public DbUser getUserEntityFromRegisterRequest(
     RegisterRequest registerRequest
   ) {
@@ -28,6 +37,12 @@ public class DbUserFactory {
     return user;
   }
 
+  /**
+   * Converts a DbUser entity to a DbUserDto.
+   *
+   * @param user The DbUser entity.
+   * @return The corresponding DbUserDto.
+   */
   public DbUserDto getUserDTOFromEntity(DbUser user) {
     DbUserDto dbUserDto = new DbUserDto()
       .setId(user.getId())
@@ -37,6 +52,12 @@ public class DbUserFactory {
     return dbUserDto;
   }
 
+  /**
+   * Converts a DbUser entity with associated subjects to a DbUserDto with subject IDs.
+   *
+   * @param dbUser The DbUser entity with associated subjects.
+   * @return The corresponding DbUserDto with subject IDs.
+   */
   public DbUserDto getUserWithSubDtoFromEntityWithSub(DbUser dbUser) {
     List<Long> subjectIds = new ArrayList<>();
     for (Subject subject : dbUser.getSubjects()) {

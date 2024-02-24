@@ -21,6 +21,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Model class representing a subject entity.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -34,20 +37,24 @@ import lombok.ToString;
 )
 public class Subject {
 
+  /** The unique identifier of the subject. */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  /** The name of the subject. */
   @NonNull
   @Size(max = 60)
   @Column(name = "name")
   private String name;
 
+  /** The description of the subject. */
   @NonNull
   @Size(min = 30)
   @Column(name = "description")
   private String description;
 
+  /** The list of posts associated with the subject. */
   @OneToMany(
     mappedBy = "subject",
     cascade = CascadeType.ALL,
@@ -56,6 +63,7 @@ public class Subject {
   )
   private List<Post> posts;
 
+  /** The list of users associated with the subject. */
   @ManyToMany(mappedBy = "subjects")
   private List<DbUser> users;
 }

@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
+/**
+ * Response payload for database user-related operations.
+ */
 @Component
 public class DbUserResponse {
 
+  // Message constants
   private static final String MESSAGE_TITLE = "message";
   private static final String INVALID_JWT_TOKEN_ID =
     "no user found with the jwt token id";
@@ -21,11 +25,18 @@ public class DbUserResponse {
   private static final String USER_NOT_SUB_OF_THIS_SUBJECT =
     "user is not a subscriber of this subject";
 
+  /**
+   * Creates a response message with the provided message.
+   * @param message The message to include in the response.
+   * @return A map containing the response message.
+   */
   public Map<String, String> createResponseMessage(String message) {
     Map<String, String> responseBody = new HashMap<>();
     responseBody.put(MESSAGE_TITLE, message);
     return responseBody;
   }
+
+  // Methods for creating specific response messages
 
   public Map<String, String> getMeNoUserFoundWithThisJwtTokenId() {
     return createResponseMessage(INVALID_JWT_TOKEN_ID);

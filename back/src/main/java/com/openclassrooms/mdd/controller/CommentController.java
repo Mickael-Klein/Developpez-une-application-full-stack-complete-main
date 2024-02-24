@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling operations related to comments.
+ */
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {
@@ -38,7 +41,7 @@ public class CommentController {
   private EntityAndDtoCreation entityAndDtoCreation;
 
   @Autowired
-  private DbUserInterface dbUserservice;
+  private DbUserInterface dbUserService;
 
   @Autowired
   private DbUserResponse dbUserResponse;
@@ -49,12 +52,19 @@ public class CommentController {
   @Autowired
   private PostResponse postResponse;
 
+  /**
+   * Endpoint for creating a new comment.
+   * @param jwt The JWT token obtained from the request.
+   * @param commentRequest The request payload containing the comment data.
+   * @return ResponseEntity containing the response to the request.
+   */
   @PostMapping("/create")
   public ResponseEntity<?> createComment(
     @AuthenticationPrincipal Jwt jwt,
     @Valid @RequestBody CommentRequest commentRequest
   ) {
     try {
+      // Retrieve the post based on the provided post ID
       Optional<Post> optionalPost = postService.getPostById(
         commentRequest.getPostId()
       );
@@ -65,8 +75,9 @@ public class CommentController {
       }
       Post post = optionalPost.get();
 
+      // Retrieve the user based on the JWT token
       long userId = jwtService.getUserIdFromJwtLong(jwt);
-      Optional<DbUser> optionalDbUser = dbUserservice.getUserById(userId);
+      Optional<DbUser> optionalDbUser = dbUserService.getUserById(userId);
       if (!optionalDbUser.isPresent()) {
         return ResponseEntity
           .badRequest()
@@ -74,17 +85,20 @@ public class CommentController {
       }
       DbUser dbUser = optionalDbUser.get();
 
+      // Create the comment
       Comment comment = new Comment();
-      comment
-        .setContent(commentRequest.getContent())
-        .setDbUser(dbUser)
-        .setPost(post)
-        .setCreatedAt(LocalDateTime.now());
+      comment.setContent(commentRequest.getContent());
+      comment.setDbUser(dbUser);
+      comment.setPost(post);
+      comment.setCreatedAt(LocalDateTime.now());
 
+      // Save the comment
       Comment savedComment = commentService.saveComment(comment);
 
+      // Retrieve the updated post with comments
       List<Comment> commentList = post.getComments();
 
+      // Return the response with the updated post
       return ResponseEntity
         .ok()
         .body(
@@ -93,6 +107,7 @@ public class CommentController {
           )
         );
     } catch (Exception e) {
+      // Return an internal server error response if an exception occurs
       return ResponseEntity.internalServerError().build();
     }
   }

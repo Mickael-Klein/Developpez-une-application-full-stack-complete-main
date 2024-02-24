@@ -24,6 +24,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Model class representing a user entity.
+ */
 @Data
 @Accessors(chain = true)
 @Builder
@@ -41,21 +44,25 @@ import lombok.experimental.Accessors;
 )
 public class DbUser {
 
+  /** The unique identifier of the user. */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  /** The email address of the user. */
   @NonNull
   @Size(max = 50)
   @Email
   @Column(name = "email")
   private String email;
 
+  /** The username of the user. */
   @NonNull
   @Size(max = 25)
   @Column(name = "username")
   private String username;
 
+  /** The password of the user. */
   @NonNull
   @Size(min = 8, max = 120)
   @Pattern(
@@ -65,6 +72,7 @@ public class DbUser {
   @Column(name = "password")
   private String password;
 
+  /** The list of posts authored by the user. */
   @OneToMany(
     mappedBy = "dbUser",
     cascade = CascadeType.ALL,
@@ -73,6 +81,7 @@ public class DbUser {
   )
   private List<Post> posts;
 
+  /** The list of comments authored by the user. */
   @OneToMany(
     mappedBy = "dbUser",
     cascade = CascadeType.ALL,
@@ -81,6 +90,7 @@ public class DbUser {
   )
   private List<Comment> comments;
 
+  /** The list of subjects associated with the user. */
   @ManyToMany
   @JoinTable(
     name = "user_subject",

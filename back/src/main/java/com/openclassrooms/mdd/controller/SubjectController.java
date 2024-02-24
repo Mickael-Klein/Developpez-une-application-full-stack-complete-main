@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+
+ * Controller for handling subject-related operations.
+ */
+
 @RestController
 @RequestMapping("/api/subject")
 public class SubjectController {
@@ -26,6 +31,11 @@ public class SubjectController {
   @Autowired
   private SubjectResponse subjectResponse;
 
+  /**
+   * Retrieves all subjects.
+   *
+   * @return ResponseEntity containing the list of subjects if successful, or an error response if an exception occurs.
+   */
   @GetMapping("/getall")
   public ResponseEntity<?> getAllSubjects() {
     try {
@@ -40,6 +50,12 @@ public class SubjectController {
     }
   }
 
+  /**
+   * Retrieves a subject by its ID.
+   *
+   * @param subjectId The ID of the subject to retrieve.
+   * @return ResponseEntity containing the subject if found, or an error response if the ID is invalid or an exception occurs.
+   */
   @GetMapping("/getbyid/{subjectId}")
   public ResponseEntity<?> getSubjectById(@PathVariable final long subjectId) {
     try {
@@ -62,6 +78,12 @@ public class SubjectController {
     }
   }
 
+  /**
+   * Retrieves a subject by its ID with associated posts.
+   *
+   * @param subjectId The ID of the subject to retrieve.
+   * @return ResponseEntity containing the subject with associated posts if found, or an error response if the ID is invalid or an exception occurs.
+   */
   @GetMapping("/getbyidwithpost/{subjectId}")
   public ResponseEntity<?> getSubjectByIdWithPost(
     @PathVariable final long subjectId

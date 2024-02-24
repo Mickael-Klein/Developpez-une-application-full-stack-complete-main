@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
+/**
+ * Response payload for database user authentication.
+ */
 @Component
 public class DbUserAuthResponse {
 
+  // Message constants
   private static final String MESSAGE_TITLE = "message";
   private static final String REGISTERING_BAD_CREDENTIALS =
     "Bad credentials for registering";
@@ -25,11 +29,18 @@ public class DbUserAuthResponse {
   private static final String USER_ERROR_OCCUR =
     "An error occurred trying to get user";
 
+  /**
+   * Creates a response message with the provided message.
+   * @param message The message to include in the response.
+   * @return A map containing the response message.
+   */
   public Map<String, String> createResponseMessage(String message) {
     Map<String, String> responseBody = new HashMap<>();
     responseBody.put(MESSAGE_TITLE, message);
     return responseBody;
   }
+
+  // Methods for creating specific response messages
 
   public Map<String, String> getRegisteringBadCredentialsResponseMessage() {
     return createResponseMessage(REGISTERING_BAD_CREDENTIALS);

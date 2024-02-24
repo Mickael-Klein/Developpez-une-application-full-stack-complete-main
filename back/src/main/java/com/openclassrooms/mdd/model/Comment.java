@@ -18,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Model class representing a comment entity.
+ */
 @Data
 @Accessors(chain = true)
 @Builder
@@ -28,23 +31,28 @@ import lombok.experimental.Accessors;
 @Table(name = "comment")
 public class Comment {
 
+  /** The unique identifier of the comment. */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  /** The content of the comment. */
   @NotNull
   @Column(name = "content")
   private String content;
 
+  /** The user who authored the comment. */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id")
   private DbUser dbUser;
 
+  /** The date and time when the comment was created. */
   @NotNull
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
+  /** The post to which the comment belongs. */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")

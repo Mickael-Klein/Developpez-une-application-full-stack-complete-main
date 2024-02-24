@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+/**
+ * Controller for handling user-related operations.
+ */
 @RestController
 @RequestMapping("/api/user")
 public class DbUserController {
@@ -54,42 +57,66 @@ public class DbUserController {
   @Autowired
   private SubjectInterface subjectService;
 
+  /**
+   * Retrieves the currently authenticated user.
+   *
+   * @param jwt The JWT token representing the current user.
+   * @return ResponseEntity containing the user's details if found, or an error response if not found or an error occurs.
+   */
   @GetMapping("/me")
   public ResponseEntity<?> getMe(@AuthenticationPrincipal Jwt jwt) {
     try {
+      // Extract user ID from JWT token
       long userId = jwtService.getUserIdFromJwtLong(jwt);
 
+      // Retrieve user from the database
       Optional<DbUser> optionalDbUser = dbUserService.getUserById(userId);
+
+      // Check if user exists
       if (!optionalDbUser.isPresent()) {
         return ResponseEntity
           .badRequest()
           .body(dbUserResponse.getMeNoUserFoundWithThisJwtTokenId());
       }
 
+      // Convert DbUser entity to DTO
       DbUserDto dbUserDto = entityAndDtoCreation.getDbUserDtoFromDbUserEntity(
         optionalDbUser.get()
       );
 
+      // Return user DTO in the response
       return ResponseEntity.ok().body(dbUserDto);
     } catch (Exception e) {
+      // Return internal server error if an exception occurs
       return ResponseEntity.internalServerError().build();
     }
   }
 
+  /**
+   * Retrieves the currently authenticated user along with their subscribed subjects.
+   *
+   * @param jwt The JWT token representing the current user.
+   * @return ResponseEntity containing the user's details with subscribed subjects if found, or an error response if not found or an error occurs.
+   */
   @GetMapping("/mewithsub")
   public ResponseEntity<?> getMeWithSub(@AuthenticationPrincipal Jwt jwt) {
     try {
+      // Extract user ID from JWT token
       long userId = jwtService.getUserIdFromJwtLong(jwt);
 
+      // Retrieve user with subscribed subjects from the database
       Optional<DbUser> optionalDbUser = dbUserService.getUserByIdWithSub(
         userId
       );
+
+      // Check if user exists
       if (!optionalDbUser.isPresent()) {
         return ResponseEntity
           .badRequest()
           .body(dbUserResponse.getMeNoUserFoundWithThisJwtTokenId());
       }
 
+      // Convert DbUser entity with subscribed subjects to DTO
       return ResponseEntity
         .ok()
         .body(
@@ -98,10 +125,19 @@ public class DbUserController {
           )
         );
     } catch (Exception e) {
+      // Return internal server error if an exception occurs
       return ResponseEntity.internalServerError().build();
     }
   }
 
+  /**
+   * Updates the profile of the currently authenticated user.
+   *
+   * @param jwt The JWT token representing the current user.
+   * @param updateProfileRequest The request body containing the updated profile information.
+   * @param bindingResult The result of the validation on the request body.
+   * @return ResponseEntity containing the updated user's details with subscribed subjects if the update is successful, or an error response if not found, validation fails, or an error occurs.
+   */
   @PutMapping("/updateme")
   public ResponseEntity<?> updateMe(
     @AuthenticationPrincipal Jwt jwt,
@@ -126,14 +162,17 @@ public class DbUserController {
           .body(dbUserResponse.getMeNoUserFoundWithThisJwtTokenId());
       }
 
+      // Get the user entity
       DbUser dbUser = optionalDbUser.get();
 
+      // Create a new DbUser instance for updating
       DbUser updatedDbUser = new DbUser();
       updatedDbUser.setId(dbUser.getId());
       updatedDbUser.setComments(dbUser.getComments());
       updatedDbUser.setPosts(dbUser.getPosts());
       updatedDbUser.setSubjects(dbUser.getSubjects());
 
+      // Update email if it's different from the current one
       if (!updateProfileRequest.getEmail().equals(dbUser.getEmail())) {
         boolean isEmailAlreadyTaken = dbUserService.isEmailAlreadyTaken(
           updateProfileRequest.getEmail()
@@ -151,6 +190,7 @@ public class DbUserController {
         updatedDbUser.setEmail(dbUser.getEmail());
       }
 
+      // Update username if it's different from the current one
       if (!updateProfileRequest.getUsername().equals(dbUser.getUsername())) {
         boolean isUsernameAlreadyTaken = dbUserService.isUsernameAlreadyTaken(
           updateProfileRequest.getUsername()
@@ -168,6 +208,7 @@ public class DbUserController {
         updatedDbUser.setUsername(dbUser.getUsername());
       }
 
+      // Update password if provided
       if (updateProfileRequest.getPassword() != null) {
         updatedDbUser.setPassword(
           bCryptPasswordEncoder.encode(updateProfileRequest.getPassword())
@@ -191,13 +232,22 @@ public class DbUserController {
     }
   }
 
+  /**
+   * Subscribes the current user to a specified subject.
+   *
+   * @param jwt The JWT token representing the current user.
+   * @param subjectId The ID of the subject to subscribe to.
+   * @return ResponseEntity containing the updated user's details with subscribed subjects if the subscription is successful, or an error response if the subject ID is invalid, the user is not found, the user is already subscribed to the subject, or an error occurs.
+   */
   @PostMapping("/subscribe/{subjectId}")
   public ResponseEntity<?> subscribe(
     @AuthenticationPrincipal Jwt jwt,
     @PathVariable final long subjectId
   ) {
     try {
+      // Get all subjects from the database
       List<Subject> subjectsList = subjectService.getAllSubject();
+      // Check if the subject ID is present in the list of subjects
       boolean isSubjectIdPresentInSubjectList = isSubjectIdPresent(
         subjectsList,
         subjectId
@@ -222,6 +272,7 @@ public class DbUserController {
 
       DbUser dbUser = optionalDbUser.get();
 
+      // Check if user is already subscribed to the subject
       boolean isUserAlreadySubOfThisSubject = isSubjectIdPresent(
         dbUser.getSubjects(),
         subjectId
@@ -232,11 +283,13 @@ public class DbUserController {
           .body(dbUserResponse.subscriptionUserAlreadySubscribed());
       }
 
+      // Add the subject to the user's list of subscribed subjects
       List<Subject> subjects = dbUser.getSubjects();
       subjects.add(subjectService.getSubjectById(subjectId).get());
 
       DbUser savedDbUser = dbUserService.saveUser(dbUser);
 
+      // Return the updated user DTO in the response
       return ResponseEntity
         .ok()
         .body(
@@ -253,13 +306,22 @@ public class DbUserController {
     }
   }
 
+  /**
+   * Unsubscribes the current user from a specified subject.
+   *
+   * @param jwt The JWT token representing the current user.
+   * @param subjectId The ID of the subject to unsubscribe from.
+   * @return ResponseEntity containing the updated user's details with subscribed subjects if the unsubscription is successful, or an error response if the subject ID is invalid, the user is not found, the user is not subscribed to the subject, or an error occurs.
+   */
   @DeleteMapping("/unsubscribe/{subjectId}")
   public ResponseEntity<?> unsubscribe(
     @AuthenticationPrincipal Jwt jwt,
     @PathVariable final long subjectId
   ) {
     try {
+      // Get all subjects from the database
       List<Subject> subjectsList = subjectService.getAllSubject();
+      // Check if the subject ID is present in the list of subjects
       boolean isSubjectIdPresentInSubjectList = isSubjectIdPresent(
         subjectsList,
         subjectId
@@ -284,6 +346,7 @@ public class DbUserController {
 
       DbUser dbUser = optionalDbUser.get();
 
+      // Check if user is already subscribed to the subject
       boolean isUserAlreadySubOfThisSubject = isSubjectIdPresent(
         dbUser.getSubjects(),
         subjectId
@@ -294,11 +357,13 @@ public class DbUserController {
           .body(dbUserResponse.subscriptionUserNotSubscribedToThisSubject());
       }
 
+      // Remove the subject from the user's list of subscribed subjects
       List<Subject> subjects = dbUser.getSubjects();
       subjects.removeIf(subject -> subject.getId() == subjectId);
 
       DbUser savedDbUser = dbUserService.saveUser(dbUser);
 
+      // Return the updated user DTO in the response
       return ResponseEntity
         .ok()
         .body(

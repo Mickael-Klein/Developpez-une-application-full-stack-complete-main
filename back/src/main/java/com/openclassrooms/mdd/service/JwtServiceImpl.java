@@ -13,6 +13,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the JwtInterface service.
+ */
 @Service
 public class JwtServiceImpl implements JwtInterface {
 
@@ -22,6 +25,12 @@ public class JwtServiceImpl implements JwtInterface {
   @Autowired
   private JwtDecoder jwtDecoder;
 
+  /**
+   * Generates a JWT token.
+   *
+   * @param id The ID of the user for whom the token is generated.
+   * @return The generated JWT token.
+   */
   @Override
   public String generateToken(long id) {
     String idToString = String.valueOf(id);
@@ -41,16 +50,35 @@ public class JwtServiceImpl implements JwtInterface {
     return jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
   }
 
+  /**
+   * Decodes a JWT token.
+   *
+   * @param token The JWT token to decode.
+   * @return The decoded JWT.
+   */
   @Override
   public Jwt decodeToken(String token) {
     return jwtDecoder.decode(token);
   }
 
+  /**
+   * Extracts the user ID from a JWT.
+   *
+   * @param jwt The JWT from which to extract the user ID.
+   * @return The user ID extracted from the JWT.
+   */
   @Override
   public long getUserIdFromJwtLong(Jwt jwt) {
     return Long.parseLong(jwt.getSubject());
   }
 
+  /**
+   * Checks if the user IDs from the token and the request payload match.
+   *
+   * @param userIdFromToken The user ID extracted from the token.
+   * @param userIdFromRequestPayload The user ID from the request payload.
+   * @return True if the user IDs match, false otherwise.
+   */
   @Override
   public boolean areUserIdsMatching(
     long userIdFromToken,

@@ -6,6 +6,9 @@ import { LoginRequest } from './interface/userAuth/request/LoginRequest';
 import { LoginResponse } from './interface/userAuth/response/LoginResponse';
 import { RegisterResponse } from './interface/userAuth/response/RegisterResponse';
 
+/**
+ * Service handling user authentication operations.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -14,12 +17,17 @@ export class UserAuthService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Registers a new user.
+   * @param {RegisterRequest} registerRequest - The registration request data.
+   * @returns {Observable<boolean>} An observable indicating the success of the registration.
+   */
   public register(registerRequest: RegisterRequest): Observable<boolean> {
     return this.http
       .post<HttpResponse<RegisterResponse>>(
         this.pathService + 'register',
         registerRequest,
-        { observe: 'response' }
+        { observe: 'response' } // allow to observe 'full' backend response, not only response body cause we're looking for http response status
       )
       .pipe(
         map((response: any) => {
@@ -33,6 +41,11 @@ export class UserAuthService {
       );
   }
 
+  /**
+   * Logs in an existing user.
+   * @param {LoginRequest} loginRequest - The login request data.
+   * @returns {Observable<string>} An observable containing the user token upon successful login.
+   */
   public login(loginRequest: LoginRequest): Observable<string> {
     return this.http
       .post<LoginResponse>(this.pathService + 'login', loginRequest)

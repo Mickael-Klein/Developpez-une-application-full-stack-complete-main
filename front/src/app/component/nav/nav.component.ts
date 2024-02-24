@@ -26,6 +26,7 @@ export class NavComponent implements OnInit {
       this.isOnMePage = false;
       this.isOnThemePage = false;
 
+      // Updating navigation flags based on the current route
       if (currentRoute === '/articles') {
         this.isOnArticlesPage = true;
       }

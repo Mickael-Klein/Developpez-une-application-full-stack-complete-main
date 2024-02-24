@@ -15,7 +15,11 @@ export class PostCardComponent {
 
   constructor(private router: Router) {}
 
+  /**
+   * Navigates to the detailed view of the clicked post.
+   */
   onPostClick() {
+    // Navigates to the detailed view of the post using its ID
     this.router.navigateByUrl(`/article/${this.postProps.id}`);
   }
 }

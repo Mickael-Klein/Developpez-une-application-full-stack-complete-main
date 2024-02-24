@@ -15,6 +15,10 @@ import { CommentService } from '../../core/service/api/comment.service';
 import { CreateCommentRequest } from '../../core/service/api/interface/comment/request/CreateCommentRequest';
 import { PostResponse } from '../../core/service/api/interface/post/response/PostResponse';
 
+/**
+ * ArticleComponent class representing the component for displaying an article.
+ * @class
+ */
 @Component({
   selector: 'app-article',
   standalone: true,

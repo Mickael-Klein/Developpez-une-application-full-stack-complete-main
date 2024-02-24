@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
     });
 
     this.routeService.getCurrentRoute$().subscribe((currentRoute: string) => {
+      // Manages header display based on route
       if (currentRoute === '/' || currentRoute === '/home') {
         this.headerShouldBeDisplay = false;
       } else {
@@ -50,10 +51,13 @@ export class HeaderComponent implements OnInit {
 
       this.screenWidth = window.innerWidth;
 
+      // Handles specific scenarios for login pages
       if (currentRoute === '/login' || currentRoute === '/register') {
+        // Hides header on small screens
         if (this.screenWidth < 769) {
           this.headerShouldBeDisplay = false;
         }
+        // Listens to window resize events to manage header display
         this.renderer2.listen(window, 'resize', (event) => {
           this.screenWidth = window.innerWidth;
           if (this.screenWidth < 769) {
@@ -64,15 +68,18 @@ export class HeaderComponent implements OnInit {
         });
       }
 
+      // Handles specific scenarios for non-home and non-login pages
       if (
         currentRoute !== '/home' &&
         currentRoute !== '/' &&
         currentRoute !== '/login' &&
         currentRoute !== 'register'
       ) {
+        // Activates mobile version on small screens
         if (this.screenWidth < 769) {
           this.isMobileVersion = true;
         }
+        // Listens to window resize events to manage mobile version
         this.renderer2.listen(window, 'resize', (event) => {
           this.screenWidth = window.innerWidth;
           if (this.screenWidth < 769) {
@@ -85,6 +92,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  /**
+   * Redirects to the home page or the articles page based on login status.
+   */
   onLogoClick() {
     if (!this.isLogged) {
       this.router.navigateByUrl('/home');
@@ -93,10 +103,16 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  /**
+   * Toggles the side navigation menu.
+   */
   onBurgerMenuClick() {
     this.toogleSideNav = true;
   }
 
+  /**
+   * Closes the side navigation menu.
+   */
   onOverlayClick() {
     this.toogleSideNav = false;
   }

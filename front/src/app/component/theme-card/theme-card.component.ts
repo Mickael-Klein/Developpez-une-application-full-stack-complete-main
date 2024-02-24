@@ -36,24 +36,31 @@ export class ThemeCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Retrieves subject ID from theme card properties
     this.subjectId = this.themeCardProps.subjectId;
+
+    // Retrieves current user information
     this.user$ = this.sessionService.$getUser().pipe(
       map((user) => {
         this.isError = false;
         return user;
       }),
       catchError((error: any) => {
-        console.log(error);
+        console.error(error);
         this.isError = true;
         return of(undefined);
       })
     );
   }
 
+  /**
+   * Subscribes the user to the subject associated with the theme card.
+   */
   subscribeToSubject() {
     this.userService
       .subscribe(this.subjectId)
       .pipe(
+        // Resets error flag and updates user data on successful subscription
         map((user: User) => {
           this.isError = false;
           this.sessionService.updateUser(user);
@@ -67,16 +74,20 @@ export class ThemeCardComponent implements OnInit {
       .subscribe();
   }
 
+  /**
+   * Unsubscribes the user from the subject associated with the theme card.
+   */
   unsubscribeFromSubject() {
     this.userService
       .unsubscribe(this.subjectId)
       .pipe(
+        // Resets error flag and updates user data on successful unsubscription
         map((user: User) => {
           this.isError = false;
           this.sessionService.updateUser(user);
         }),
         catchError((error) => {
-          console.log(error);
+          console.error(error);
           this.isError = true;
           return of(null);
         })

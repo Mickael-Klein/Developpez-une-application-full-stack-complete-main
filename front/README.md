@@ -1,27 +1,125 @@
-# Front
+# MDD App (Monde de Dév) Angular Frontend Project (MVP (Minimum Viable Product))
+
+This repository contains an Angular Frontend for the MDD MVP Project.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
 
-## Development server
+## Table of Contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [MDD App Angular Frontend Project](#mdd-app-monde-de-dév-angular-frontend-project-mvp-minimum-viable-product)
+  - [Contents](#table-of-contents)
+  - [Prerequisite Requirements](#prerequisite-requirements)
+  - [Installation Guide](#installation-guide)
+  - [Project Architecture](#project-architecture)
 
-## Code scaffolding
+## Prerequisite Requirements
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 1. Node Package Manager (NPM)
 
-## Build
+**Installing NPM:**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Before working with the MDD Angular Frontend, ensure that Node Package Manager (NPM) is installed on your system. NPM is essential for managing dependencies and running scripts. Follow the steps below:
 
-## Running unit tests
+1. Download and install [Node.js](https://nodejs.org/).
+2. Confirm the successful installation by running the following commands in your terminal or command prompt:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```shell
+node -v
+npm -v
+```
 
-## Running end-to-end tests
+You should see versions for both Node.js and NPM.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### 2. Angular CLI
 
-## Further help
+**Installing Angular CLI:**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Angular CLI is a command-line interface for Angular applications. Install the latest version globally using the following command:
+
+```shell
+npm install -g @angular/cli
+```
+
+Confirm the successful installation by running:
+
+```shell
+ng --version
+```
+
+You should see information about the installed Angular CLI version
+
+## Installation Guide
+
+**Cloning the project:**
+
+1. Clone this repository from GitHub: `git clone https://github.com/Mickael-Klein/OpenClassRooms-Dev-FullStack-Projet_6.git`
+
+2. Navigate to front folder
+
+```shell
+cd front
+```
+
+3. Install dependencies
+
+```shell
+npm install
+```
+
+**This project works with the API provided in the Backend part of the application, don't forget to install it and run it before running the Frontend.**
+
+4. Launch Frontend
+
+```shell
+npm start
+```
+
+## Project Architecture
+
+```
+├───app
+│   ├───component
+│   │   ├───button
+│   │   ├───comment
+│   │   ├───header
+│   │   ├───nav
+│   │   ├───post-card
+│   │   └───theme-card
+│   ├───core
+│   │   ├───model
+│   │   └───service
+│   │       ├───api
+│   │       │   ├───common
+│   │       │   └───interface
+│   │       │       ├───comment
+│   │       │       │   ├───request
+│   │       │       │   └───response
+│   │       │       ├───post
+│   │       │       │   ├───request
+│   │       │       │   └───response
+│   │       │       ├───subject
+│   │       │       ├───user
+│   │       │       │   ├───request
+│   │       │       │   └───response
+│   │       │       └───userAuth
+│   │       │           ├───request
+│   │       │           └───response
+│   │       ├───route
+│   │       └───session
+│   ├───enviroment
+│   ├───guard
+│   ├───interceptor
+│   ├───interface
+│   ├───page
+│   │   ├───article
+│   │   ├───articles
+│   │   ├───home
+│   │   ├───login
+│   │   ├───me
+│   │   ├───new-article
+│   │   ├───not-found
+│   │   ├───register
+│   │   └───theme
+│   └───style
+└───assets
+```

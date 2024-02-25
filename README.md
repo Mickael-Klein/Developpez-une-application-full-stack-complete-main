@@ -22,9 +22,9 @@ The project is developed using Angular for the frontend and Spring Boot for the 
 
 ## Directory Structure
 
-frontend/: Contains the source code of the frontend application developed in Angular.
-backend/: Contains the source code of the backend API developed in Spring Boot.
-resources/: Contains resources necessary for the project, such as SQL script and Postman collection.
+- frontend/: Contains the source code of the frontend application developed in Angular.
+- backend/: Contains the source code of the backend API developed in Spring Boot.
+- resources/: Contains resources necessary for the project, such as SQL script and Postman collection.
 
 ### Installation and Execution Instructions
 

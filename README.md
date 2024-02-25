@@ -1,25 +1,41 @@
-# P6-Full-Stack-reseau-dev
+# MDD App (Monde de Dév), Full Stack Angular/Spring Boot project
 
-## Front
+This repository houses both the Angular Frontend and the Spring Boot API backend for the MDD app project.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+## Context
 
-Don't forget to install your node_modules before starting (`npm install`).
+This project is the project 6 of the Angular/Java Full Stack OpenClassrooms Course.
 
-### Development server
+## Project Description
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+ORION aims to create the next social network dedicated to developers: MDD (Monde de Dév). The main objective of this social network is to assist developers in finding jobs by facilitating connections and encouraging collaboration among peers with common interests. MDD could become a talent pool for companies seeking specific profiles.
 
-### Build
+Before launching MDD to a wider audience, the company wants to test it with a minimal version deployed internally, also known as MVP (Minimum Viable Product).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## MVP Features
 
-### Where to start
+The MVP will allow users to subscribe to programming-related topics such as JavaScript, Java, Python, Web3, etc. Their news feed will display articles chronologically based on these subscriptions. Users will also be able to write articles and post comments.
 
-As you may have seen if you already started the app, a simple home page containing a logo, a title and a button is available. If you take a look at its code (in the `home.component.html`) you will see that an external UI library is already configured in the project.
+## Architecture
 
-This library is `@angular/material`, it's one of the most famous in the angular ecosystem. As you can see on their docs (https://material.angular.io/), it contains a lot of highly customizable components that will help you design your interfaces quickly.
+The project is developed using Angular for the frontend and Spring Boot for the backend. This architecture provides a clear separation between the user interface (frontend) and the business logic (backend), ensuring maximum scalability and maintainability.
 
-Note: I recommend to use material however it's not mandatory, if you prefer you can get ride of it.
+## Directory Structure
 
-Good luck!
+frontend/: Contains the source code of the frontend application developed in Angular.
+backend/: Contains the source code of the backend API developed in Spring Boot.
+resources/: Contains resources necessary for the project, such as SQL script and Postman collection.
+
+### Installation and Execution Instructions
+
+To run the frontend and backend projects locally, please follow the specific instructions for each part in their respective directories.
+
+## Cloning the project
+
+`git clone https://github.com/Mickael-Klein/OpenClassRooms-Dev-FullStack-Projet_6.git`
+
+## Links to projects and Readme
+
+- [MDD App Angular Frontend](https://github.com/Mickael-Klein/OpenClassRooms-Dev-FullStack-Projet_6/tree/main/front)
+- [MDD App Spring Boot Backend](https://github.com/Mickael-Klein/OpenClassRooms-Dev-FullStack-Projet_6/tree/main/back)
+- [MDD App Ressources](https://github.com/Mickael-Klein/OpenClassRooms-Dev-FullStack-Projet_6/tree/main/resources)

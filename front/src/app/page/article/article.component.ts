@@ -16,7 +16,7 @@ import { CreateCommentRequest } from '../../core/service/api/interface/comment/r
 import { PostResponse } from '../../core/service/api/interface/post/response/PostResponse';
 
 /**
- * ArticleComponent class representing the component for displaying an article.
+ * ArticleComponent class representing the component for displaying the article page.
  * @class
  */
 @Component({
@@ -45,6 +45,7 @@ export class ArticleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // get id url parameter and fetch post with id, assign to post$ if success or trigger error handling logic
     this.postId = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (!this.postId) {
@@ -85,13 +86,21 @@ export class ArticleComponent implements OnInit {
     this.router.navigateByUrl('/articles');
   }
 
+  /**
+   * Submits a comment.
+   * Validates comment content before submission.
+   * If content is valid, creates a comment using the comment service.
+   */
   submitComment() {
     this.commentHasError = false;
     this.commentServiceError = false;
+
     const commentControl = this.commentForm.controls['comment'];
+
     const commentContent = commentControl.value;
     const isCommentContentValid = commentControl.valid;
 
+    // If the comment content is not valid, set error flag and return
     if (!isCommentContentValid) {
       this.commentHasError = true;
       return;
@@ -104,11 +113,13 @@ export class ArticleComponent implements OnInit {
 
     this.commentService.createComment(commentRequest).subscribe({
       next: (response: PostResponse) => {
+        // Update the post with the response (updated post with comments)
         this.post$ = of(response);
         this.commentForm.get('comment')?.setValue('');
       },
       error: (error: any) => {
         console.log(error);
+        // Set error flag for the comment service
         this.commentServiceError = true;
       },
     });

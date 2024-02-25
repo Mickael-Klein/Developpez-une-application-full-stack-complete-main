@@ -17,6 +17,11 @@ import { PostResponse } from '../../core/service/api/interface/post/response/Pos
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, filter, map } from 'rxjs';
 
+/**
+ * Component for displaying new-article page.
+ * This component allows users to create a new post/article.
+ * @class
+ */
 @Component({
   selector: 'app-new-article',
   standalone: true,
@@ -25,8 +30,6 @@ import { Observable, catchError, filter, map } from 'rxjs';
   styleUrl: './new-article.component.scss',
 })
 export class NewArticleComponent implements OnInit {
-  // form, errorOnFormPart, errorOnSubmit, submitFunction, redirectionArrow
-
   subjectList$!: Observable<Subject[]>;
   sujectFetchError = false;
   postForm!: FormGroup;
@@ -67,12 +70,14 @@ export class NewArticleComponent implements OnInit {
     this.router.navigateByUrl('/articles');
   }
 
+  /** Handles the change event when selecting a theme */
   onSelectChange() {
     if (this.postForm.controls['theme'].value !== 'Sélectionner un thème') {
       this.themeIsNotPlaceholderSelection = true;
     }
   }
 
+  /** Handles the form submission for creating a new post */
   onSubmitForm() {
     if (!this.isSubmitting) {
       this.isSubmitting = true;
@@ -111,6 +116,7 @@ export class NewArticleComponent implements OnInit {
         this.contentHasError = true;
       }
 
+      // If any error is present, stop submission
       if (this.themeHasError || this.titleHasError || this.contentHasError) {
         this.isSubmitting = false;
         return;
@@ -124,9 +130,10 @@ export class NewArticleComponent implements OnInit {
         subjectId: subjectId,
       };
 
+      // Send request to create a new post
       this.postService.create(newPost).subscribe({
         next: (response: PostResponse) => {
-          console.log('response', response);
+          // Set success flag and navigate back to articles after 3 seconds
           this.submitSuccess = true;
           setTimeout(() => {
             this.router.navigateByUrl('/articles');

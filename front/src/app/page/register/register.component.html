@@ -57,4 +57,8 @@
       (click)="onSubmitForm()"
     />
   </form>
+
+  @if (registerIsSuccess) {
+  <p class="registerSuccess">Successfully registered, redirecting...</p>
+  }
 </main>

@@ -12,6 +12,13 @@ import { ButtonComponent } from '../../component/button/button.component';
 import { Button } from '../../interface/Button.interface';
 import { LoginRequest } from '../../core/service/api/interface/userAuth/request/LoginRequest';
 
+/**
+ * Component for displaying login page.
+ * This component allows users to input their credentials and authenticate themselves.
+ * Upon successful login, users are redirected to the articles page.
+ * If there is an error during login, appropriate error messages are displayed.
+ * @class
+ */
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -27,7 +34,6 @@ export class LoginComponent implements OnInit {
   credentialsErrorMessage = '';
   screenWidth!: number;
   responsiveImageShouldBeDisplay = false;
-
   buttonProps: Button = { colored: true, text: 'Se connecter' };
 
   constructor(
@@ -44,11 +50,13 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
     });
 
+    // Detect screen width and set responsive image display
     this.screenWidth = window.innerWidth;
     if (this.screenWidth < 769) {
       this.responsiveImageShouldBeDisplay = true;
     }
 
+    // Listen for window resize events to update screen width and responsive image display
     this.renderer2.listen(window, 'resize', (event) => {
       this.screenWidth = window.innerWidth;
       if (this.screenWidth < 769) {
@@ -59,7 +67,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles form submission upon user login attempt.
+   * Validates user inputs, performs login request, and handles response accordingly.
+   */
   onSubmitForm(): void {
+    // Reset error flags and messages
     this.emailOrUsernameHasError = false;
     this.passwordHasError = false;
     this.credentialsError = false;
@@ -76,11 +89,11 @@ export class LoginComponent implements OnInit {
     if (!isEmailOrUsernameValidInput) {
       this.emailOrUsernameHasError = true;
     }
-
     if (!isPasswordValidInput) {
       this.passwordHasError = true;
     }
 
+    // If there are input errors, abort
     if (this.emailOrUsernameHasError || this.passwordHasError) {
       return;
     }
@@ -90,13 +103,16 @@ export class LoginComponent implements OnInit {
       password: passwordValue,
     };
 
+    // Perform login request and handle response
     this.userAuthService.login(loginRequest).subscribe({
       next: (response: string) => {
         console.log('response : ', response);
+        // Log in user and navigate to articles page
         this.sessionService.logIn(response).subscribe((response: boolean) => {
           if (response) {
             this.router.navigateByUrl('/articles');
           } else {
+            // Display credentials error message if login fails
             this.credentialsError = true;
             this.credentialsErrorMessage = 'An error occured, try again later';
           }
@@ -104,7 +120,6 @@ export class LoginComponent implements OnInit {
       },
       error: (err: any) => {
         this.credentialsError = true;
-
         if (err.status === 500) {
           this.credentialsErrorMessage = 'An error occured, try again later';
         } else {

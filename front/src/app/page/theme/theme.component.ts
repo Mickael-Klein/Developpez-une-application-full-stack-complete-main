@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../../core/service/session/session.service';
-import { Router } from '@angular/router';
 import { SubjectService } from '../../core/service/api/subject.service';
-import { Observable, catchError, filter, map, of, tap } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { Subject } from '../../core/model/Subject.model';
-import { User } from '../../core/model/User.model';
 import { CommonModule } from '@angular/common';
 import { ThemeCardComponent } from '../../component/theme-card/theme-card.component';
 import { ThemeCard } from '../../interface/ThemeCard.interface';
 
+/**
+ * Component for displaying theme page.
+ * This component allows users to see all subjects/themes available and subscribe to them.
+ * @class
+ */
 @Component({
   selector: 'app-theme',
   standalone: true,
@@ -23,6 +25,7 @@ export class ThemeComponent implements OnInit {
   constructor(private subjectService: SubjectService) {}
 
   ngOnInit(): void {
+    // Retrieve list of subjects and handle errors
     this.subjectList$ = this.subjectService.$getSubjects().pipe(
       map((subjects) => {
         this.subjectFetchError = false;
@@ -35,6 +38,11 @@ export class ThemeComponent implements OnInit {
     );
   }
 
+  /**
+   * Transforms a subject into theme card properties.
+   * @param subject - The subject object
+   * @returns themeCard - Theme card properties
+   */
   toThemeCardProps(subject: Subject): ThemeCard {
     const themeCardProps: ThemeCard = {
       subjectId: subject.id,

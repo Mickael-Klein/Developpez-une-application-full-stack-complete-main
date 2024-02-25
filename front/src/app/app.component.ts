@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { SessionService } from './core/service/session/session.service';
 import { HeaderComponent } from './component/header/header.component';
 import { SubjectService } from './core/service/api/subject.service';
 import { Subject } from './core/model/Subject.model';
 
+/**
+ * Main Component of the MDD Client App.
+ * @class
+ */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -17,12 +21,12 @@ export class AppComponent implements OnInit {
   sessionLoginWithJwtIsLoading = true;
 
   constructor(
-    private router: Router,
     private sessionService: SessionService,
     private subjectService: SubjectService
   ) {}
 
   ngOnInit(): void {
+    // Attempt login with JWT stored in local storage (service will check if there is any and handle logic case success)
     this.sessionService.loginWithLocalStorageJwt();
 
     this.sessionService.$isLoading().subscribe((isLoading: boolean) => {
@@ -30,7 +34,7 @@ export class AppComponent implements OnInit {
     });
 
     this.sessionService.$isLogged().subscribe((isLogged: boolean) => {
-      // Subjects fetch only if user is logged to avoid access to unauthorized data in network xhr request
+      // Fetch subjects only if user is logged in to avoid unauthorized access
       if (isLogged) {
         this.subjectService.getAllSubjects().subscribe({
           next: (subjects: Subject[]) => {

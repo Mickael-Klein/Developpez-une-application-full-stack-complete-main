@@ -11,6 +11,11 @@ import { UserAuthService } from '../../core/service/api/user-auth.service';
 import { Router } from '@angular/router';
 import { RegisterRequest } from '../../core/service/api/interface/userAuth/request/RegisterRequest';
 
+/**
+ * Component for displaying register page.
+ * This component allows users to register.
+ * @class
+ */
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -25,6 +30,7 @@ export class RegisterComponent implements OnInit {
   passwordHasError = false;
   registerFormHasError = false;
   registerErrorMessage = '';
+  registerIsSuccess = false;
   screenWidth!: number;
   responsiveImageShouldBeDisplay = false;
 
@@ -52,11 +58,13 @@ export class RegisterComponent implements OnInit {
       ],
     });
 
+    // Set initial screen width and responsive image display
     this.screenWidth = window.innerWidth;
     if (this.screenWidth < 769) {
       this.responsiveImageShouldBeDisplay = true;
     }
 
+    // Listen for window resize event to adjust responsive image display
     this.renderer2.listen(window, 'resize', (event) => {
       this.screenWidth = window.innerWidth;
       if (this.screenWidth < 769) {
@@ -67,6 +75,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  /** Handles form submission for user registration */
   onSubmitForm(): void {
     this.emailHasError = false;
     this.usernameHasError = false;
@@ -98,6 +107,7 @@ export class RegisterComponent implements OnInit {
       this.passwordHasError = true;
     }
 
+    // If any validation fails, stop submission
     if (this.emailHasError || this.usernameHasError || this.passwordHasError) {
       return;
     }
@@ -108,10 +118,15 @@ export class RegisterComponent implements OnInit {
       password: passwordValue,
     };
 
+    // Send request to register new user
     this.userAuthService.register(registerRequest).subscribe({
       next: (success: boolean) => {
         if (success) {
-          this.router.navigateByUrl('/login');
+          // Set success flag, display success to user and redirect after 3 seconds
+          setTimeout(() => {
+            this.registerIsSuccess = true;
+            this.router.navigateByUrl('/login');
+          }, 3000);
         }
       },
       error: (error: any) => {

@@ -20,6 +20,11 @@ import { ThemeCard } from '../../interface/ThemeCard.interface';
 import { ThemeCardComponent } from '../../component/theme-card/theme-card.component';
 import { UpdateUserRequest } from '../../core/service/api/interface/user/request/UpdateUserRequest';
 
+/**
+ * Component for displaying me page.
+ * This component allows users to update their infos, see to which subjects they are subscribed, and unsubscribe from them.
+ * @class
+ */
 @Component({
   selector: 'app-me',
   standalone: true,
@@ -91,6 +96,7 @@ export class MeComponent implements OnInit {
       })
     );
 
+    // Populate the update user form with initial user data
     this.user$.subscribe((user) => {
       if (user) {
         this.updateUserForm.patchValue({
@@ -103,8 +109,8 @@ export class MeComponent implements OnInit {
     this.subjects$ = this.subjectService.$getSubjects();
   }
 
+  /** Updates user information */
   updateUser() {
-    console.log('called');
     if (!this.isSubmitting) {
       this.isSubmitting = true;
       this.emailAlreadyTaken = false;
@@ -140,6 +146,7 @@ export class MeComponent implements OnInit {
         }
       }
 
+      // If any validation error is present, stop submission
       if (this.emailError || this.usernameError || this.passwordError) {
         this.isSubmitting = false;
         return;
@@ -152,6 +159,7 @@ export class MeComponent implements OnInit {
           passwordValue.length > 0 && { password: passwordValue }),
       };
 
+      // If user data is not modified, stop submission
       if (
         this.sessionService.user?.email === updateUserRequest.email &&
         this.sessionService.user.username === updateUserRequest.username &&
@@ -161,17 +169,22 @@ export class MeComponent implements OnInit {
         return;
       }
 
+      // Send update request to the server
       this.userService
         .updateMe(updateUserRequest)
         .pipe(
           map((user: User) => {
+            // Update session user data
             this.sessionService.updateUser(user);
+            // Patch form values with updated user data
             this.updateUserForm.patchValue({
               email: user.email,
               username: user.username,
             });
+            // Set success flag and reset form submission state
             this.updateUserSuccess = true;
             this.isSubmitting = false;
+            // Reset success flag after 3 seconds
             setTimeout(() => {
               this.updateUserSuccess = false;
             }, 3000);
@@ -196,11 +209,17 @@ export class MeComponent implements OnInit {
     }
   }
 
+  /** Logs out the user and navigates to the home page */
   logout() {
     this.sessionService.logOut();
     this.router.navigateByUrl('/home');
   }
 
+  /**
+   * Constructs theme card properties for the given subject.
+   * @param subject - The subject for which theme card properties are being constructed.
+   * @returns themeCardProps - The constructed theme card properties.
+   */
   toThemeCardProps(subject: Subject): ThemeCard {
     const themeCardProps: ThemeCard = {
       subjectId: subject.id,

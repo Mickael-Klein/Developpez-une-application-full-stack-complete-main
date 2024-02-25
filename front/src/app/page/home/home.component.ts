@@ -3,6 +3,10 @@ import { Button } from '../../interface/Button.interface';
 import { ButtonComponent } from '../../component/button/button.component';
 import { Router } from '@angular/router';
 
+/**
+ * HomeComponent class representing the component for displaying the home page.
+ * @class
+ */
 @Component({
   selector: 'app-home',
   standalone: true,

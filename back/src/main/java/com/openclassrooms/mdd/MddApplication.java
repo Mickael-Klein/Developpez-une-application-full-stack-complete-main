@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Main class of the MDD (Monde De Dév) application.
+ * Main class of the MDD (Monde de Dév) application.
  */
 @SpringBootApplication
 public class MddApplication {

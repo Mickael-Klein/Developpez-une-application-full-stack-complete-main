@@ -98,9 +98,11 @@ oc.app.jwtSecret={jwtKey}
 
 The `jwtKey` must contain your JWT encryption key, which will be used for authentication purposes. Use a strong 256-bit key and keep it confidential.
 
-3. Run the application using your IDE or by running `mvn spring-boot:run` in the project directory.
+3. Install the application by running `mvn clean install` in the project directory.
 
-4. You can also use Postman to test API calls, Postman collection can be found in the `root\resources\postman` folder. (you will need to use bearer token which will be send back after login success call to API and then use it for all other requests to API endpoints other than auth's ones).
+4. Run the application using your IDE or by running `mvn spring-boot:run` in the project directory.
+
+5. You can also use Postman to test API calls, Postman collection can be found in the `root\resources\postman` folder. (you will need to use bearer token which will be send back after login success call to API and then use it for all other requests to API endpoints other than auth's ones).
 
 ## Project Architecture
 

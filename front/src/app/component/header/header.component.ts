@@ -1,9 +1,10 @@
-import { Component, OnInit, Renderer2, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, signal } from '@angular/core';
 import { SessionService } from '../../core/service/session/session.service';
 import { NavComponent } from '../nav/nav.component';
 import { Router } from '@angular/router';
 import { RouteService } from '../../core/service/route/route.service';
 import { MobileNav } from '../../interface/MobileNav.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +13,16 @@ import { MobileNav } from '../../interface/MobileNav.interface';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   isLogged!: boolean;
   headerShouldBeDisplay = true;
   screenWidth!: number;
   isMobileVersion = false;
 
   toogleSideNav = false;
+
+  isLoggedSubscription!: Subscription;
+  routeSubscription!: Subscription;
 
   constructor(
     private sessionService: SessionService,
@@ -35,13 +39,13 @@ export class HeaderComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.sessionService.$isLogged().subscribe({
+    this.isLoggedSubscription = this.sessionService.$isLogged().subscribe({
       next: (response: boolean) => {
         this.isLogged = response;
       },
     });
 
-    this.routeService.getCurrentRoute$().subscribe((currentRoute: string) => {
+    this.routeSubscription = this.routeService.getCurrentRoute$().subscribe((currentRoute: string) => {
       // Manages header display based on route
       if (currentRoute === '/' || currentRoute === '/home') {
         this.headerShouldBeDisplay = false;
@@ -90,6 +94,15 @@ export class HeaderComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.isLoggedSubscription) {
+      this.isLoggedSubscription.unsubscribe();
+    }
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 
   /**

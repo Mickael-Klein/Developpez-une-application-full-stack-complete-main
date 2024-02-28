@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { UserAuthService } from '../../core/service/api/user-auth.service';
 import { SessionService } from '../../core/service/session/session.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import {
 import { ButtonComponent } from '../../component/button/button.component';
 import { Button } from '../../interface/Button.interface';
 import { LoginRequest } from '../../core/service/api/interface/userAuth/request/LoginRequest';
+import { Subscription } from 'rxjs';
 
 /**
  * Component for displaying login page.
@@ -26,7 +27,7 @@ import { LoginRequest } from '../../core/service/api/interface/userAuth/request/
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   emailOrUsernameHasError = false;
   passwordHasError = false;
@@ -35,6 +36,9 @@ export class LoginComponent implements OnInit {
   screenWidth!: number;
   responsiveImageShouldBeDisplay = false;
   buttonProps: Button = { colored: true, text: 'Se connecter' };
+
+  loginSubscription!: Subscription;
+  sessionSubscription!: Subscription;
 
   constructor(
     private userAuthService: UserAuthService,
@@ -65,6 +69,15 @@ export class LoginComponent implements OnInit {
         this.responsiveImageShouldBeDisplay = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.loginSubscription) {
+      this.loginSubscription.unsubscribe();
+    }
+    if (this.sessionSubscription) {
+      this.sessionSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -104,29 +117,34 @@ export class LoginComponent implements OnInit {
     };
 
     // Perform login request and handle response
-    this.userAuthService.login(loginRequest).subscribe({
-      next: (response: string) => {
-        console.log('response : ', response);
-        // Log in user and navigate to articles page
-        this.sessionService.logIn(response).subscribe((response: boolean) => {
-          if (response) {
-            this.router.navigateByUrl('/articles');
-          } else {
-            // Display credentials error message if login fails
-            this.credentialsError = true;
+    this.loginSubscription = this.userAuthService
+      .login(loginRequest)
+      .subscribe({
+        next: (response: string) => {
+          console.log('response : ', response);
+          // Log in user and navigate to articles page
+          this.sessionSubscription = this.sessionService
+            .logIn(response)
+            .subscribe((response: boolean) => {
+              if (response) {
+                this.router.navigateByUrl('/articles');
+              } else {
+                // Display credentials error message if login fails
+                this.credentialsError = true;
+                this.credentialsErrorMessage =
+                  'An error occured, try again later';
+              }
+            });
+        },
+        error: (err: any) => {
+          this.credentialsError = true;
+          if (err.status === 500) {
             this.credentialsErrorMessage = 'An error occured, try again later';
+          } else {
+            this.credentialsErrorMessage = 'Invalid Credentials';
           }
-        });
-      },
-      error: (err: any) => {
-        this.credentialsError = true;
-        if (err.status === 500) {
-          this.credentialsErrorMessage = 'An error occured, try again later';
-        } else {
-          this.credentialsErrorMessage = 'Invalid Credentials';
-        }
-      },
-    });
+        },
+      });
   }
 
   backToHome() {

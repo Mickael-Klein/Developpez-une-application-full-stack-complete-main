@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import { Button } from '../../interface/Button.interface';
 import { UserAuthService } from '../../core/service/api/user-auth.service';
 import { Router } from '@angular/router';
 import { RegisterRequest } from '../../core/service/api/interface/userAuth/request/RegisterRequest';
+import { Subscription } from 'rxjs';
 
 /**
  * Component for displaying register page.
@@ -23,7 +24,7 @@ import { RegisterRequest } from '../../core/service/api/interface/userAuth/reque
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
   emailHasError = false;
   usernameHasError = false;
@@ -33,8 +34,11 @@ export class RegisterComponent implements OnInit {
   registerIsSuccess = false;
   screenWidth!: number;
   responsiveImageShouldBeDisplay = false;
+  isRegistering = false;
 
   buttonProps: Button = { colored: true, text: "S'inscrire" };
+
+  registerSubscription!: Subscription;
 
   constructor(
     private userAuthService: UserAuthService,
@@ -75,13 +79,23 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.registerSubscription) {
+      this.registerSubscription.unsubscribe();
+    }
+  }
+
   /** Handles form submission for user registration */
   onSubmitForm(): void {
+    if (this.isRegistering) {
+      return;
+    }
     this.emailHasError = false;
     this.usernameHasError = false;
     this.passwordHasError = false;
     this.registerFormHasError = false;
     this.registerErrorMessage = '';
+    this.isRegistering = true;
 
     const emailControl = this.registerForm.controls['email'];
     const isEmailValidInput = emailControl.valid;
@@ -109,6 +123,7 @@ export class RegisterComponent implements OnInit {
 
     // If any validation fails, stop submission
     if (this.emailHasError || this.usernameHasError || this.passwordHasError) {
+      this.isRegistering = false;
       return;
     }
 
@@ -119,26 +134,30 @@ export class RegisterComponent implements OnInit {
     };
 
     // Send request to register new user
-    this.userAuthService.register(registerRequest).subscribe({
-      next: (success: boolean) => {
-        if (success) {
-          // Set success flag, display success to user and redirect after 3 seconds
-          setTimeout(() => {
+    this.registerSubscription = this.userAuthService
+      .register(registerRequest)
+      .subscribe({
+        next: (success: boolean) => {
+          if (success) {
             this.registerIsSuccess = true;
-            this.router.navigateByUrl('/login');
-          }, 3000);
-        }
-      },
-      error: (error: any) => {
-        this.registerFormHasError = true;
+            // redirect after 3 seconds
+            setTimeout(() => {
+              this.router.navigateByUrl('/login');
+            }, 3000);
+          }
+        },
+        error: (error: any) => {
+          this.isRegistering = false;
+          this.registerFormHasError = true;
 
-        if (error.status === 500) {
-          this.registerErrorMessage = 'A error occured, please try again later';
-        } else {
-          this.registerErrorMessage = error.error.message;
-        }
-      },
-    });
+          if (error.status === 500) {
+            this.registerErrorMessage =
+              'A error occured, please try again later';
+          } else {
+            this.registerErrorMessage = error.error.message;
+          }
+        },
+      });
   }
 
   backToHome(): void {

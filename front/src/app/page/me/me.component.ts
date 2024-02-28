@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SessionService } from '../../core/service/session/session.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/service/api/user.service';
 import { User } from '../../core/model/User.model';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, Subscription, catchError, map, of } from 'rxjs';
 import { Subject } from '../../core/model/Subject.model';
 import {
   FormBuilder,
@@ -37,7 +37,7 @@ import { UpdateUserRequest } from '../../core/service/api/interface/user/request
   templateUrl: './me.component.html',
   styleUrl: './me.component.scss',
 })
-export class MeComponent implements OnInit {
+export class MeComponent implements OnInit, OnDestroy {
   user$!: Observable<User | undefined>;
   userFetchError = false;
   subjects$!: Observable<Subject[]>;
@@ -61,6 +61,8 @@ export class MeComponent implements OnInit {
     text: 'Se désabonner',
     colored: true,
   };
+
+  userServiceSubscription!: Subscription;
 
   constructor(
     private sessionService: SessionService,
@@ -107,6 +109,12 @@ export class MeComponent implements OnInit {
     });
 
     this.subjects$ = this.subjectService.$getSubjects();
+  }
+
+  ngOnDestroy(): void {
+    if (this.userServiceSubscription) {
+      this.userServiceSubscription.unsubscribe();
+    }
   }
 
   /** Updates user information */
@@ -170,7 +178,7 @@ export class MeComponent implements OnInit {
       }
 
       // Send update request to the server
-      this.userService
+      this.userServiceSubscription = this.userService
         .updateMe(updateUserRequest)
         .pipe(
           map((user: User) => {

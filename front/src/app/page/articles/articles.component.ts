@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SessionService } from '../../core/service/session/session.service';
 import { SubjectService } from '../../core/service/api/subject.service';
 import { Router } from '@angular/router';
 import { Subject } from '../../core/model/Subject.model';
 import { Post } from '../../core/model/Post.model';
-import { Observable, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { Observable, Subscription, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { ButtonComponent } from '../../component/button/button.component';
 import { Button } from '../../interface/Button.interface';
 import { PostCardComponent } from '../../component/post-card/post-card.component';
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './articles.component.html',
   styleUrl: './articles.component.scss',
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
   subscription$!: Observable<number[]>;
   subjects: Subject[] = [];
   orderedPostsByDate: Post[] = [];
@@ -34,6 +34,8 @@ export class ArticlesComponent implements OnInit {
     text: 'Créer un article',
     colored: true,
   };
+
+  subscription!: Subscription;
 
   constructor(
     private sessionService: SessionService,
@@ -93,7 +95,7 @@ export class ArticlesComponent implements OnInit {
     );
 
     // Subscribes to the final stream of subjects with posts
-    subjects$.subscribe({
+    this.subscription = subjects$.subscribe({
       next: (subject: Subject) => {
         this.subjectCount++;
 
@@ -116,6 +118,12 @@ export class ArticlesComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  ngOnDestroy(): void {
+      if(this.subscription) {
+        this.subscription.unsubscribe();
+      }
   }
 
   // Orders posts by date in descending order

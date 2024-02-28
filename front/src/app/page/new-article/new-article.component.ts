@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from '../../core/service/api/post.service';
 import {
@@ -15,7 +15,7 @@ import { SessionService } from '../../core/service/session/session.service';
 import { CreatePostRequest } from '../../core/service/api/interface/post/request/CreatePostRequest';
 import { PostResponse } from '../../core/service/api/interface/post/response/PostResponse';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, filter, map } from 'rxjs';
+import { Observable, Subscription, catchError, filter, map } from 'rxjs';
 
 /**
  * Component for displaying new-article page.
@@ -29,7 +29,7 @@ import { Observable, catchError, filter, map } from 'rxjs';
   templateUrl: './new-article.component.html',
   styleUrl: './new-article.component.scss',
 })
-export class NewArticleComponent implements OnInit {
+export class NewArticleComponent implements OnInit, OnDestroy {
   subjectList$!: Observable<Subject[]>;
   sujectFetchError = false;
   postForm!: FormGroup;
@@ -42,6 +42,8 @@ export class NewArticleComponent implements OnInit {
   isSubmitting = false;
 
   buttonProps: Button = { colored: true, text: 'Créer' };
+
+  postServiceSubscription!: Subscription;
 
   constructor(
     private router: Router,
@@ -64,6 +66,12 @@ export class NewArticleComponent implements OnInit {
       title: [null, [Validators.required, Validators.maxLength(60)]],
       content: [null, [Validators.required, Validators.minLength(10)]],
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.postServiceSubscription) {
+      this.postServiceSubscription.unsubscribe();
+    }
   }
 
   backToArticles() {
@@ -131,20 +139,22 @@ export class NewArticleComponent implements OnInit {
       };
 
       // Send request to create a new post
-      this.postService.create(newPost).subscribe({
-        next: (response: PostResponse) => {
-          // Set success flag and navigate back to articles after 3 seconds
-          this.submitSuccess = true;
-          setTimeout(() => {
-            this.router.navigateByUrl('/articles');
-          }, 3000);
-        },
-        error: (error: any) => {
-          console.log(error);
-          this.submitHasError = true;
-          this.isSubmitting = false;
-        },
-      });
+      this.postServiceSubscription = this.postService
+        .create(newPost)
+        .subscribe({
+          next: (response: PostResponse) => {
+            // Set success flag and navigate back to articles after 3 seconds
+            this.submitSuccess = true;
+            setTimeout(() => {
+              this.router.navigateByUrl('/articles');
+            }, 3000);
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.submitHasError = true;
+            this.isSubmitting = false;
+          },
+        });
     }
   }
 }

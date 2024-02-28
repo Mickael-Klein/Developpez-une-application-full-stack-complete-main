@@ -98,8 +98,6 @@ export class NewArticleComponent implements OnInit, OnDestroy {
       const themeContent = themeControl.value;
       const isThemeValid = themeControl.valid;
 
-      console.log('themeContent', themeContent);
-
       if (!isThemeValid) {
         this.themeHasError = true;
       }
@@ -108,8 +106,6 @@ export class NewArticleComponent implements OnInit, OnDestroy {
       const titleContent = titleControl.value;
       const isTitleValid = titleControl.valid;
 
-      console.log('titleContent', titleContent);
-
       if (!isTitleValid) {
         this.titleHasError = true;
       }
@@ -117,8 +113,6 @@ export class NewArticleComponent implements OnInit, OnDestroy {
       const contentControl = this.postForm.controls['content'];
       const contentContent = contentControl.value;
       const isContentValid = contentControl.valid;
-
-      console.log('contentContent', contentContent);
 
       if (!isContentValid) {
         this.contentHasError = true;

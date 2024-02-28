@@ -121,7 +121,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login(loginRequest)
       .subscribe({
         next: (response: string) => {
-          console.log('response : ', response);
           // Log in user and navigate to articles page
           this.sessionSubscription = this.sessionService
             .logIn(response)

@@ -4,7 +4,16 @@ import { SubjectService } from '../../core/service/api/subject.service';
 import { Router } from '@angular/router';
 import { Subject } from '../../core/model/Subject.model';
 import { Post } from '../../core/model/Post.model';
-import { Observable, Subscription, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  filter,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+} from 'rxjs';
 import { ButtonComponent } from '../../component/button/button.component';
 import { Button } from '../../interface/Button.interface';
 import { PostCardComponent } from '../../component/post-card/post-card.component';
@@ -108,7 +117,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
         if (this.subjectCount === this.subjectNumber) {
           // if all requested subjects had been fetch, end loading state (complete)
           this.orderedPostsByDate = this.orderPostArrByDateDesc(); // Orders posts by date
-          console.log(this.orderedPostsByDate);
           this.isLoading = false;
         }
       },
@@ -121,9 +129,9 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      if(this.subscription) {
-        this.subscription.unsubscribe();
-      }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   // Orders posts by date in descending order

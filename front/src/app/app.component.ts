@@ -46,7 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
           this.subjectService.getAllSubjects().subscribe({
             next: (subjects: Subject[]) => {
               this.subjectService.subjects = subjects;
-              console.log(this.subjectService.subjects);
             },
             error: (error: any) => {
               console.log('error while fetching subjects');

@@ -39,7 +39,7 @@ public class JwtServiceImpl implements JwtInterface {
       .builder()
       .issuer("self")
       .issuedAt(instantNow)
-      .expiresAt(instantNow.plus(30, ChronoUnit.DAYS))
+      .expiresAt(instantNow.plus(1, ChronoUnit.DAYS))
       .subject(idToString)
       .build();
 

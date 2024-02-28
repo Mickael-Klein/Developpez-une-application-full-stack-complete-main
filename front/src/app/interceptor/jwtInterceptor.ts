@@ -1,6 +1,8 @@
 import { HttpHandlerFn, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { SessionService } from '../core/service/session/session.service';
+import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 /**
  * Interceptor function to add JWT token to the headers of HTTP requests,
@@ -10,8 +12,24 @@ import { SessionService } from '../core/service/session/session.service';
  * @returns The HTTP request with JWT token added to the headers.
  */
 export function jwtInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
+  const sessionService = inject(SessionService);
+  const router = inject(Router)
+
   if (!req.url.includes('/auth')) {
     const jwt = localStorage.getItem('jwt');
+
+    // Check if JWT and JWT expiration date is valid for request now
+    if(jwt) {
+      const decodedToken = jwtDecode(jwt);
+      if(decodedToken.exp && Date.now() > decodedToken.exp * 1000) {
+        sessionService.logOut();
+        router.navigateByUrl("/home")
+      }
+    } else {
+      sessionService.logOut();
+      router.navigateByUrl("/home")
+    }
+
     const headers = new HttpHeaders().append('Authorization', `Bearer ${jwt}`);
     req = req.clone({ headers });
   }

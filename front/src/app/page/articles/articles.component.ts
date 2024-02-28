@@ -31,7 +31,7 @@ export class ArticlesComponent implements OnInit {
   subjectCount = 0;
 
   buttonProps: Button = {
-    text: 'Create an article',
+    text: 'Créer un article',
     colored: true,
   };
 

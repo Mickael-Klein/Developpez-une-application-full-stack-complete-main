@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../core/service/api/post.service';
 import { Post } from '../../core/model/Post.model';
@@ -14,6 +14,7 @@ import {
 import { CommentService } from '../../core/service/api/comment.service';
 import { CreateCommentRequest } from '../../core/service/api/interface/comment/request/CreateCommentRequest';
 import { PostResponse } from '../../core/service/api/interface/post/response/PostResponse';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * ArticleComponent class representing the component for displaying the article page.
@@ -36,6 +37,8 @@ export class ArticleComponent implements OnInit {
   postIdToInt!: number;
   commentServiceError = false;
 
+  private destroyRef: DestroyRef = inject(DestroyRef);
+
   constructor(
     private router: Router,
     private postService: PostService,
@@ -57,11 +60,9 @@ export class ArticleComponent implements OnInit {
         this.errorOnIdParameter = true;
       } else {
         this.post$ = this.postService.getById(this.postIdToInt).pipe(
+          takeUntilDestroyed(this.destroyRef),
           catchError((error) => {
-            console.error(
-              'Erreur lors de la récupération des données du post :',
-              error
-            );
+            console.error(error);
             this.errorOnIdParameter = true;
             this.isLoading = false;
             return throwError(() => error);

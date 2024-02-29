@@ -58,6 +58,7 @@ export class ArticleComponent implements OnInit {
 
       if (Number.isNaN(this.postIdToInt)) {
         this.errorOnIdParameter = true;
+        this.router.navigateByUrl('**');
       } else {
         this.post$ = this.postService.getById(this.postIdToInt).pipe(
           takeUntilDestroyed(this.destroyRef),
@@ -65,6 +66,7 @@ export class ArticleComponent implements OnInit {
             console.error(error);
             this.errorOnIdParameter = true;
             this.isLoading = false;
+            this.router.navigateByUrl('**');
             return throwError(() => error);
           })
         );
